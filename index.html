@@ -3,21 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BM Masters | Operational Field Intelligence</title>
+  <title>BM Masters | Operational Telecom Execution</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --ink: #16181b;
-      --ink-soft: #1f2125;
-      --paper: #d8d9db;
+      --ink: #17191d;
+      --ink-2: #23262b;
+      --paper: #d7d8da;
       --paper-2: #cfd1d3;
-      --line: rgba(22, 24, 27, 0.24);
-      --muted: #5a5d62;
-      --accent: #ff5b47;
-      --accent-deep: #ff4b3f;
+      --line: rgba(23, 25, 29, 0.22);
+      --line-strong: rgba(23, 25, 29, 0.42);
+      --muted: #5e636b;
+      --accent: #ff5d48;
+      --accent-2: #ff463f;
       --white: #f6f6f6;
+      --radius: 24px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,10 +28,9 @@
       font-family: 'Inter', system-ui, sans-serif;
       color: var(--ink);
       background: var(--paper);
-      line-height: 1.35;
+      line-height: 1.3;
+      overflow-x: hidden;
     }
-
-
 
     body::before {
       content: '';
@@ -37,13 +38,13 @@
       inset: 0;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
-      background-size: 56px 56px;
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 58px 58px;
+      opacity: .42;
       mix-blend-mode: soft-light;
-      opacity: .4;
+      animation: gridMove 26s linear infinite;
       z-index: -1;
-      animation: gridShift 26s linear infinite;
     }
 
     body::after {
@@ -51,58 +52,61 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      background: linear-gradient(to bottom, transparent 0%, rgba(255,91,71,.09) 45%, transparent 100%);
+      background: linear-gradient(to bottom, transparent 0%, rgba(255, 93, 72, .09) 45%, transparent 100%);
       transform: translateY(-100%);
+      animation: scanline 10s linear infinite;
+      z-index: 5;
       opacity: .5;
-      z-index: 3;
-      animation: scan 10s linear infinite;
     }
 
-    @keyframes gridShift { from { transform: translateY(0);} to { transform: translateY(56px);} }
-    @keyframes scan { from { transform: translateY(-100%);} to { transform: translateY(100%);} }
-    @keyframes riseIn { from { opacity:0; transform: translateY(26px);} to { opacity:1; transform: translateY(0);} }
-    @keyframes pulseGlow { 0%,100% { box-shadow: 0 0 0 rgba(255,91,71,0);} 50% { box-shadow: 0 0 34px rgba(255,91,71,.34);} }
-    @keyframes spinSlow { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
-    @keyframes driftBg { from { background-position: center 50%; } to { background-position: center 56%; } }
+    @keyframes gridMove { from { transform: translateY(0); } to { transform: translateY(58px); } }
+    @keyframes scanline { from { transform: translateY(-100%); } to { transform: translateY(100%); } }
+    @keyframes revealUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 rgba(255,93,72,0); } 50% { box-shadow: 0 0 32px rgba(255,93,72,.36); } }
 
     .mono {
       font-family: 'Share Tech Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      letter-spacing: .12em;
+      letter-spacing: .11em;
       text-transform: uppercase;
     }
 
-    .container { width: min(1240px, 100%); margin: 0 auto; }
-    .frame { border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
-
-    .topbar {
-      transition: background .35s ease, border-color .35s ease;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(216, 217, 219, 0.86);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--line);
+    .shell {
+      width: min(1240px, 100%);
+      margin: 0 auto;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--paper), var(--paper-2));
     }
 
-    .topbar-inner {
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
       min-height: 82px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 28px;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(215, 216, 218, .88);
+      backdrop-filter: blur(12px);
+      transition: background .3s ease, border-color .3s ease;
     }
 
     .brand {
-      transition: transform .3s ease;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 2.1rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
       text-decoration: none;
       color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: clamp(1.45rem, 2vw, 2.05rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      transition: transform .24s ease;
     }
+
+    .brand:hover { transform: translateY(-2px); }
 
     .brand-mark {
       width: 20px;
@@ -114,386 +118,433 @@
     }
 
     .menu-pill {
-      border: 1px solid rgba(22, 24, 27, 0.25);
-      background: #cbcccf;
-      border-radius: 999px;
-      min-width: 138px;
-      padding: 12px 20px;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 11px;
-      color: #2d3138;
+      min-width: 128px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      padding: 10px 16px;
       text-decoration: none;
-      transition: transform .25s ease, background .25s ease;
+      color: #2f343b;
+      background: #ceced1;
+      transition: transform .22s ease, background .22s ease;
     }
 
-    .menu-pill:hover { transform: translateY(-2px); background: #d9dadd; }
-    .brand:hover { transform: translateY(-2px); }
-    .hamburger { display: grid; gap: 6px; }
-    .hamburger span { display: block; width: 26px; height: 2px; background: #2d3138; }
-    .menu-pill b { font-size: .95rem; color: #3391ff; font-weight: 500; }
+    .menu-pill:hover { transform: translateY(-2px); background: #dcdddf; }
+    .menu-pill span { width: 24px; height: 2px; background: #2f343b; display: block; box-shadow: 0 7px 0 #2f343b; }
+    .menu-pill b { color: #2f8ff9; font-weight: 500; font-size: .88rem; }
+
+    section { border-bottom: 1px solid var(--line); }
 
     .hero {
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(160deg, var(--accent), var(--accent-deep));
-      color: #16181b;
+      background: linear-gradient(160deg, var(--accent), var(--accent-2));
+      padding: clamp(34px, 6vw, 62px) 24px;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: clamp(18px, 3.2vw, 42px);
+      min-height: min(64vh, 760px);
+      align-items: center;
+      overflow: clip;
       position: relative;
-      overflow: hidden;
     }
 
     .hero::after {
-      content: "";
+      content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 80% 25%, rgba(255,255,255,.2), transparent 38%);
+      background: radial-gradient(circle at 82% 30%, rgba(255,255,255,.2), transparent 36%);
       pointer-events: none;
-      opacity: .45;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.05fr 1fr;
-      gap: 30px;
-      min-height: 58vh;
-      padding: 56px 28px 50px;
     }
 
     .hero h1 {
-      animation: riseIn .9s cubic-bezier(.2,.7,.2,1) both;
-      font-size: clamp(3.2rem, 10vw, 7.8rem);
-      line-height: .88;
+      font-size: clamp(3.1rem, 9vw, 8rem);
+      line-height: .86;
       letter-spacing: -0.06em;
-      max-width: 700px;
+      max-width: 7.4ch;
+      animation: revealUp .8s cubic-bezier(.2,.65,.2,1) both;
     }
 
     .hero-copy {
-      animation: riseIn .95s .12s cubic-bezier(.2,.7,.2,1) both;
-      align-self: center;
-      font-size: clamp(1.2rem, 2.5vw, 3.1rem);
-      font-weight: 500;
-      max-width: 560px;
-      line-height: 1.04;
+      max-width: 22ch;
+      font-size: clamp(1.45rem, 3.2vw, 3.15rem);
+      line-height: .98;
       letter-spacing: -0.02em;
+      font-weight: 500;
+      animation: revealUp .95s .1s cubic-bezier(.2,.65,.2,1) both;
+      text-wrap: balance;
     }
 
-    .status-band {
+    .status-grid {
       display: grid;
-      grid-template-columns: 1.6fr .9fr;
-      border-bottom: 1px solid var(--line);
-      min-height: 420px;
+      grid-template-columns: 1.55fr .9fr;
+      min-height: 430px;
     }
 
     .status-left {
-      overflow: hidden;
-      background: radial-gradient(circle at 50% 45%, #2b2d31, #16181b 70%);
-      color: #d6d7d9;
-      padding: 48px 30px;
-      border-right: 1px solid rgba(255,255,255,.1);
+      background: radial-gradient(circle at 48% 42%, #2c2e32, #17191d 72%);
+      color: #d7d9dc;
+      padding: clamp(24px, 4vw, 46px);
+      border-right: 1px solid rgba(255,255,255,.12);
       position: relative;
+      overflow: hidden;
     }
 
-    .status-left h2 { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 18px; letter-spacing: -0.02em; }
-    .status-left ul { list-style: none; font-size: 1.72rem; line-height: 1.22; color: #b9bcc1; }
+    .status-left h2 { font-size: clamp(2rem, 4.8vw, 3.3rem); margin-bottom: 14px; letter-spacing: -0.03em; }
+    .status-left ul { list-style: none; display: grid; gap: 6px; font-size: clamp(1.02rem, 2vw, 1.75rem); color: #c0c4c8; }
+    .status-left li::before { content: attr(data-n) '. '; color: #8a8f97; }
 
-    .status-left ul li::before { content: attr(data-n) '. '; color: #7f848d; margin-right: 6px; }
-
-    .status-left .matrix {
-      animation: pulseGlow 5s ease-in-out infinite;
+    .matrix {
       position: absolute;
-      left: 30px;
-      bottom: 34px;
-      color: #8a8e95;
+      left: clamp(16px, 3vw, 28px);
+      bottom: clamp(14px, 2.2vw, 30px);
+      color: #868b93;
       font-size: .95rem;
       line-height: 1.2;
       white-space: pre;
+      animation: pulse 5.5s ease-in-out infinite;
+      max-width: calc(100% - 36px);
+      overflow: hidden;
     }
 
-    .status-right {
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-    }
+    .status-right { display: grid; grid-template-rows: 1fr 1fr; min-width: 0; }
+
+    .status-copy,
+    .status-cta { padding: clamp(22px, 3.4vw, 34px) clamp(18px, 2.8vw, 28px); }
 
     .status-copy {
-      background: var(--paper);
-      border-bottom: 1px solid var(--line);
-      padding: 38px 28px;
       display: grid;
       align-content: center;
-      font-size: clamp(1.8rem, 3vw, 3.3rem);
-      line-height: 1.02;
+      font-size: clamp(1.6rem, 3.2vw, 3.15rem);
       letter-spacing: -0.03em;
-      font-weight: 500;
+      line-height: 1.02;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      text-wrap: balance;
     }
 
     .status-cta {
-      background: var(--accent);
-      padding: 34px 28px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      background: var(--accent);
+      min-height: 180px;
     }
 
-    .status-cta .arrow { font-size: clamp(3.1rem, 8vw, 6.4rem); line-height: 1; align-self: end; transition: transform .28s ease; }
-    .status-cta a { color: var(--ink); text-decoration: none; font-size: clamp(1.8rem, 3.2vw, 3.5rem); font-weight: 600; line-height: .95; }
-    .status-cta:hover .arrow { transform: translate(5px, -5px); }
+    .status-cta .arrow { align-self: end; font-size: clamp(3rem, 7vw, 6rem); transition: transform .25s ease; }
+    .status-cta:hover .arrow { transform: translate(6px, -6px); }
+    .status-cta a { color: var(--ink); text-decoration: none; font-size: clamp(1.5rem, 2.6vw, 3rem); line-height: .95; font-weight: 600; }
 
-    .cards-intro {
-      background: var(--paper);
-      border-bottom: 1px solid var(--line);
-      padding: 30px 28px;
+    .intro {
       display: flex;
       justify-content: space-between;
       align-items: end;
-      gap: 20px;
+      gap: 18px;
+      padding: clamp(20px, 3vw, 32px) 24px;
+      background: var(--paper);
     }
 
-    .cards-intro h2 { font-size: clamp(2rem, 4.8vw, 4rem); letter-spacing: -0.04em; line-height: .95; }
+    .intro h2 { font-size: clamp(2.2rem, 5vw, 4.15rem); letter-spacing: -0.04em; line-height: .9; text-wrap: balance; }
+
     .nav-circles { display: flex; gap: 12px; }
-    .nav-circles span {
-      transition: transform .25s ease, background .25s ease;
-      width: 62px;
-      height: 62px;
+    .nav-circles i {
+      width: 58px;
+      aspect-ratio: 1;
       border-radius: 50%;
       display: grid;
       place-items: center;
+      font-style: normal;
       background: var(--ink);
       color: var(--paper);
-      font-size: 2rem;
+      transition: transform .2s ease;
     }
-    .nav-circles span:hover { transform: translateY(-2px); background: #2a2e33; }
+    .nav-circles i:hover { transform: translateY(-2px); }
 
     .cap-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-bottom: 1px solid var(--line);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .cap-card {
-      transition: transform .3s ease, background .3s ease;
-      min-height: 550px;
-      padding: 36px 28px 28px;
-      border-right: 1px solid var(--line);
+      min-height: 540px;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 18px;
+      padding: clamp(20px, 3vw, 34px) 24px 24px;
+      border-right: 1px solid var(--line);
+      transition: transform .25s ease, background .25s ease;
+      min-width: 0;
     }
 
     .cap-card:last-child { border-right: 0; }
-    .cap-card:hover { transform: translateY(-6px); background: #dedfe1; }
-    .icon { width: 132px; height: 132px; margin-bottom: 8px; transition: transform .35s ease; }
-    .icon.orb { border: 2px solid #7e8289; border-radius: 50%; position: relative; }
-    .icon.orb::before, .icon.orb::after { content: ''; position: absolute; inset: 18px; border: 1px solid #7e8289; border-radius: 50%; }
-    .icon.dots {
-      border-radius: 50%;
-      background: radial-gradient(circle, #777 2px, transparent 2px);
-      background-size: 8px 8px;
-      mask: radial-gradient(circle at 50% 50%, black 44%, transparent 46%);
-      border: 1px solid #92959a;
-    }
+    .cap-card:hover { transform: translateY(-5px); background: #dedfe1; }
+
+    .icon { width: 124px; aspect-ratio: 1; margin-bottom: 8px; }
+    .icon.orb { border: 2px solid #7f848c; border-radius: 50%; position: relative; }
+    .icon.orb::before, .icon.orb::after { content: ''; position: absolute; inset: 18px; border: 1px solid #7f848c; border-radius: 50%; }
+    .icon.dots { border-radius: 50%; border: 1px solid #8f949b; background: radial-gradient(circle, #777 2px, transparent 2px); background-size: 8px 8px; mask: radial-gradient(circle at 50% 50%, black 42%, transparent 44%); }
     .icon.star { position: relative; }
-    .icon.star::before { content: ''; position: absolute; inset: 0; background:
-      repeating-conic-gradient(from 0deg, #767a80 0 2deg, transparent 2deg 16deg); border-radius: 50%; animation: spinSlow 18s linear infinite; }
-    .cap-card:hover .icon { transform: scale(1.04); }
+    .icon.star::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: repeating-conic-gradient(from 0deg, #767b82 0 2deg, transparent 2deg 15deg); animation: spin 18s linear infinite; }
 
-    .cap-card h3 { font-size: clamp(2.2rem, 4vw, 4rem); letter-spacing: -0.03em; line-height: .95; }
-    .cap-card p { color: #34383e; font-size: 1.48rem; line-height: 1.2; }
+    .cap-card h3 { font-size: clamp(2rem, 4vw, 3.8rem); line-height: .92; letter-spacing: -0.03em; text-wrap: balance; }
+    .cap-card p { font-size: clamp(.86rem, 1.3vw, 1.35rem); line-height: 1.2; color: #353940; max-width: 42ch; }
 
-    .pill-btn {
-      transition: transform .25s ease, background .25s ease, color .25s ease;
+    .pill {
       margin-top: auto;
-      border: 1px solid rgba(26, 27, 31, .42);
+      align-self: flex-start;
+      border: 1px solid var(--line-strong);
       border-radius: 999px;
+      padding: 12px 24px;
       text-decoration: none;
-      color: #2b2f34;
-      font-size: 1.32rem;
-      padding: 13px 26px;
-      align-self: start;
+      color: #2f343a;
+      transition: background .24s ease, color .24s ease, transform .24s ease;
     }
-    .pill-btn:hover { transform: translateY(-2px); background: var(--ink); color: var(--white); }
+
+    .pill:hover { background: var(--ink); color: var(--white); transform: translateY(-2px); }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      background: #1b1e23;
+      color: #d8dbe0;
+    }
+
+    .proof-item {
+      min-height: 170px;
+      padding: 22px 18px;
+      border-right: 1px solid rgba(255,255,255,.12);
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: grid;
+      align-content: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .proof-item:last-child { border-right: 0; }
+    .proof-item strong { font-size: clamp(1.5rem, 2.2vw, 2.2rem); letter-spacing: -0.02em; }
+    .proof-item span { color: #aeb4bc; font-size: .93rem; }
 
     .news-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      border-bottom: 1px solid var(--line);
     }
 
-    .news-image-large {
-      animation: driftBg 14s ease-in-out infinite alternate;
+    .news-image {
       min-height: 690px;
+      border-right: 1px solid var(--line);
       background:
         linear-gradient(to top, rgba(0,0,0,.45), transparent 40%),
         url('https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?auto=format&fit=crop&w=1400&q=80&sat=-100') center/cover;
-      border-right: 1px solid var(--line);
+      animation: imageDrift 13s ease-in-out infinite alternate;
     }
 
-    .news-stack { display: grid; grid-template-rows: repeat(2, minmax(250px, 1fr)); }
+    @keyframes imageDrift { from { background-position: center 48%; } to { background-position: center 56%; } }
+
+    .news-stack { display: grid; grid-template-rows: repeat(3, minmax(210px, 1fr)); min-width: 0; }
+
     .news-item {
-      transition: background .3s ease, transform .3s ease;
-      padding: 30px 24px;
+      padding: clamp(20px, 2.8vw, 30px) clamp(16px, 2.5vw, 24px);
       border-bottom: 1px solid var(--line);
       display: grid;
       align-content: center;
-      gap: 8px;
+      gap: 10px;
+      transition: background .24s ease, transform .24s ease;
+      min-width: 0;
     }
 
     .news-item:last-child { border-bottom: 0; }
-    .news-item:hover { background: #e1e2e4; transform: translateX(4px); }
-    .news-item h4 { font-size: clamp(1.8rem, 3.1vw, 3.4rem); line-height: 1; letter-spacing: -0.03em; }
-    .news-item .date { font-size: 1.12rem; color: #5d6268; }
-    .news-item p { font-size: 1.32rem; color: #30343a; }
+    .news-item:hover { background: #e1e2e4; transform: translateX(3px); }
+    .news-item h4 { font-size: clamp(1.5rem, 2.6vw, 3rem); line-height: 1; letter-spacing: -0.03em; text-wrap: balance; }
+    .news-item .date { font-size: .95rem; color: var(--muted); }
+    .news-item p { font-size: clamp(.86rem, 1.25vw, 1.2rem); line-height: 1.2; color: #2f343a; max-width: 52ch; }
 
     .footer {
-      min-height: 200px;
-      background: linear-gradient(90deg, #1b1d21, #23262b);
-      color: #dadadc;
+      min-height: 190px;
+      padding: 36px 24px;
       display: grid;
       place-items: center;
       text-align: center;
-      padding: 38px 20px;
+      background: linear-gradient(90deg, #1c1f24, #262a30);
+      color: #d9dde1;
     }
 
-    .footer b { font-size: clamp(1.9rem, 3vw, 3.1rem); letter-spacing: -0.03em; }
-    .footer p { color: #b2b5b9; margin-top: 10px; font-size: 1.2rem; }
+    .footer b { font-size: clamp(1.9rem, 3vw, 3rem); letter-spacing: -0.03em; }
+    .footer p { color: #b1b7bf; margin-top: 10px; font-size: clamp(.85rem, 1.2vw, 1.15rem); }
 
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.65,.2,1); }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .8s ease, transform .8s cubic-bezier(.2,.65,.2,1);
+    }
+
     .reveal.show { opacity: 1; transform: translateY(0); }
 
+    @media (max-width: 1100px) {
+      .proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 980px) {
-      .hero-grid,
-      .status-band,
+      .hero,
+      .status-grid,
       .cap-grid,
       .news-grid { grid-template-columns: 1fr; }
 
       .status-right { grid-template-rows: auto auto; }
-      .cap-card { border-right: 0; border-top: 1px solid var(--line); min-height: auto; }
-      .news-image-large { border-right: 0; border-bottom: 1px solid var(--line); min-height: 500px; }
+      .cap-card { min-height: auto; border-right: 0; border-top: 1px solid var(--line); }
+      .cap-card:first-child { border-top: 0; }
+      .news-image { min-height: 520px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .news-stack { grid-template-rows: repeat(3, minmax(180px, 1fr)); }
     }
 
-    @media (max-width: 680px) {
-      .topbar-inner,
-      .hero-grid,
-      .cards-intro,
+    @media (max-width: 720px) {
+      .topbar,
+      .hero,
+      .intro,
       .status-left,
       .status-copy,
       .status-cta,
       .cap-card,
-      .news-item { padding-left: 18px; padding-right: 18px; }
+      .news-item,
+      .proof-item { padding-left: 16px; padding-right: 16px; }
 
-      .menu-pill { min-width: 116px; padding: 10px 14px; }
-      .menu-pill b { font-size: .84rem; }
-      .brand { font-size: 1.7rem; }
-      .status-left ul { font-size: 1.2rem; }
-      .status-left .matrix { display: none; }
+      .menu-pill { min-width: 112px; }
+      .menu-pill b { font-size: .8rem; }
+      .matrix { display: none; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .news-image { min-height: 420px; }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container frame topbar-inner">
-      <a class="brand" href="#">
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="#top">
         <span class="brand-mark"></span>
         <span>BM MASTERS</span>
       </a>
       <a class="menu-pill" href="#contact" aria-label="Open contact section">
-        <span class="hamburger" aria-hidden="true"><span></span><span></span></span>
+        <span aria-hidden="true"></span>
         <b class="mono">Menu</b>
       </a>
-    </div>
-  </header>
+    </header>
 
-  <main class="container frame">
-    <section class="hero reveal">
-      <div class="hero-grid">
-        <h1>Op<br/>Field<br/>Intelligence</h1>
-        <p class="hero-copy">Operational intelligence for every site, every crew, every rollout.</p>
-      </div>
+    <section class="hero reveal" id="top">
+      <h1>Op<br/>Field<br/>Intelligence</h1>
+      <p class="hero-copy">Operational intelligence for every site, every crew, every rollout.</p>
     </section>
 
-    <section class="status-band reveal" id="about">
+    <section class="status-grid reveal" id="about">
       <article class="status-left">
         <h2>System Status</h2>
         <ul class="mono">
           <li data-n="01">RAN Buildouts</li>
-          <li data-n="02">Integration</li>
-          <li data-n="03">Electrical</li>
-          <li data-n="04">Logistics</li>
-          <li data-n="05">Closeout Packs</li>
+          <li data-n="02">Integration Troubleshooting</li>
+          <li data-n="03">Electrical & Power</li>
+          <li data-n="04">Material Logistics</li>
+          <li data-n="05">Closeout Documentation</li>
+          <li data-n="06">Carrier Compliance QA</li>
         </ul>
-        <div class="matrix mono">01111100  10010101  10101100
-01011110  11101100  10110101
-00001111  01011110  00111111
-
-10110111  01110111  01111100
-00000101  01000101  10010010
-11011100  11010110  01001111</div>
+        <div class="matrix mono">01111100 10010101 10101100
+01011110 11101100 10110101
+00001111 01011110 00111111
+10110111 01110111 01111100
+00000101 01000101 10010010
+11011100 11010110 01001111</div>
       </article>
 
       <div class="status-right">
-        <div class="status-copy">Powering actionable execution for carrier and infrastructure programs.</div>
+        <div class="status-copy">Powering actionable execution for carrier and infrastructure programs across the Southeast.</div>
         <div class="status-cta">
           <div class="arrow">↗</div>
-          <a href="#services">Explore the platform.</a>
+          <a href="#services">Explore capabilities.</a>
         </div>
       </div>
     </section>
 
-    <section class="cards-intro reveal" id="services">
-      <h2>Operational<br/>Intelligence Solutions</h2>
-      <div class="nav-circles"><span>←</span><span>→</span></div>
+    <section class="intro reveal" id="services">
+      <h2>Operational<br/>Execution Solutions</h2>
+      <div class="nav-circles" aria-hidden="true"><i>←</i><i>→</i></div>
     </section>
 
     <section class="cap-grid reveal">
       <article class="cap-card">
         <div class="icon orb" aria-hidden="true"></div>
         <h3>Wireless<br/>Construction</h3>
-        <p class="mono">ANALYZE SCOPE, CREW LOAD, SAFETY GATES AND MARKET READINESS FOR FASTER SITE ACTIVATION.</p>
-        <a class="pill-btn mono" href="#contact">Explore</a>
+        <p class="mono">SITE BUILDS, MODIFICATIONS, SAFETY-DRIVEN CREW MANAGEMENT, AND SCHEDULE RECOVERY FOR ACTIVE NETWORK PROGRAMS.</p>
+        <a class="pill mono" href="#contact">Explore</a>
       </article>
+
       <article class="cap-card">
         <div class="icon dots" aria-hidden="true"></div>
-        <h3>Predictive<br/>Maintenance</h3>
-        <p class="mono">TRANSFORM FIELD SIGNALS INTO PROACTIVE TASKING TO KEEP FLEETS SAFE AND ROLL-OUTS ON SCHEDULE.</p>
-        <a class="pill-btn mono" href="#contact">Explore</a>
+        <h3>Integration<br/>Stabilization</h3>
+        <p class="mono">FIELD TROUBLESHOOTING, DEFECT TRIAGE, AND RAPID TASKING TO KEEP MARKET ACCEPTANCE MILESTONES ON TRACK.</p>
+        <a class="pill mono" href="#contact">Explore</a>
       </article>
+
       <article class="cap-card">
         <div class="icon star" aria-hidden="true"></div>
-        <h3>Fleet<br/>Compliance</h3>
-        <p class="mono">PROCESS CHECKLISTS, LOGS AND QA DATA TO IDENTIFY RISKS EARLY AND ENFORCE DELIVERY DISCIPLINE.</p>
-        <a class="pill-btn mono" href="#contact">Explore</a>
+        <h3>Program<br/>Compliance</h3>
+        <p class="mono">DOCUMENTATION CONTROL, COP DISCIPLINE, COI READINESS, AND OPERATIONAL GOVERNANCE FOR LOW-RISK DELIVERY.</p>
+        <a class="pill mono" href="#contact">Explore</a>
       </article>
     </section>
 
-    <section class="news-grid reveal" id="credentials">
-      <div class="news-image-large"></div>
+    <section class="proof-grid reveal" id="credentials">
+      <article class="proof-item">
+        <strong>Tier-1 Program Support</strong>
+        <span class="mono">CARRIER AND VENDOR DELIVERY EXPERIENCE</span>
+      </article>
+      <article class="proof-item">
+        <strong>Safety-First Operations</strong>
+        <span class="mono">NATE CULTURE · CREW GOVERNANCE · FIELD QA</span>
+      </article>
+      <article class="proof-item">
+        <strong>Compliance Ready</strong>
+        <span class="mono">COI COVERAGE · AVETTA / COMPLI TRACKING</span>
+      </article>
+      <article class="proof-item">
+        <strong>Regional Footprint</strong>
+        <span class="mono">NC · SC · GA · VA · CHARLOTTE HUB</span>
+      </article>
+    </section>
+
+    <section class="news-grid reveal">
+      <div class="news-image" role="img" aria-label="Operational aircraft visual"></div>
       <div class="news-stack">
         <article class="news-item">
-          <h4>BM Masters scales multi-market integration support across NC, SC, GA and VA.</h4>
-          <div class="date mono">February 23, 2026</div>
-          <p class="mono">OPERATIONAL HUB MODEL COORDINATES CREWS, MATERIALS AND ISSUE ESCALATIONS FOR CARRIER PROGRAMS.</p>
+          <h4>BM Masters expands multi-market deployment support with integrated field command workflows.</h4>
+          <div class="date mono">February 2026</div>
+          <p class="mono">CENTRALIZED LOGISTICS, RAPID ISSUE ESCALATION, AND EXECUTION OVERSIGHT FROM KICKOFF TO CLOSEOUT.</p>
         </article>
+
+        <article class="news-item">
+          <h4>Leadership priority: predictable schedules, auditable quality, and clear accountability in every market.</h4>
+          <div class="date mono">Operational Doctrine</div>
+          <p class="mono">STANDARDIZED REPORTING, MEASURABLE FIELD KPIS, AND DECISION-READY STATUS VISIBILITY FOR PROGRAM OWNERS.</p>
+        </article>
+
         <article class="news-item" id="contact">
-          <h4>Contact: info@bm-masters.com · 267 356 2999 · 267 592 7107</h4>
-          <div class="date mono">Operational HQ · Charlotte Radius</div>
-          <p class="mono">COI READY · AVETTA / COMPLI TRACKED · TIER-1 DELIVERY PARTNER PROFILE.</p>
+          <h4>Contact BM Masters</h4>
+          <div class="date mono">info@bm-masters.com · 267 356 2999 · 267 592 7107</div>
+          <p class="mono">TELECOM CONSTRUCTION · INTEGRATION · TIGER TEAMS · OPERATIONAL HUB SUPPORT.</p>
         </article>
       </div>
     </section>
-  </main>
 
-  <footer class="footer reveal">
-    <div>
-      <b>BM Masters</b>
-      <p class="mono">TELECOM CONSTRUCTION & FIELD SERVICES · MISSION-GRADE EXECUTION</p>
-    </div>
-  </footer>
+    <footer class="footer reveal">
+      <div>
+        <b>BM Masters</b>
+        <p class="mono">TELECOM CONSTRUCTION & FIELD SERVICES · MISSION-GRADE EXECUTION</p>
+      </div>
+    </footer>
+  </main>
 
   <script>
     const topbar = document.querySelector('.topbar');
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY > 10;
-      topbar.style.background = scrolled ? 'rgba(216, 217, 219, 0.96)' : 'rgba(216, 217, 219, 0.86)';
-      topbar.style.borderBottomColor = scrolled ? 'rgba(22,24,27,.35)' : 'rgba(22,24,27,.24)';
+      topbar.style.background = scrolled ? 'rgba(215,216,218,.97)' : 'rgba(215,216,218,.88)';
+      topbar.style.borderBottomColor = scrolled ? 'rgba(23,25,29,.38)' : 'rgba(23,25,29,.22)';
     }, { passive: true });
 
     const observer = new IntersectionObserver((entries) => {
@@ -507,6 +558,5 @@
 
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
   </script>
-
 </body>
 </html>
