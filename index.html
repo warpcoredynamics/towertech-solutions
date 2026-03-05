@@ -33,6 +33,8 @@
       overflow-x: hidden;
     }
 
+    a, button, .card, .panel { will-change: transform, opacity; }
+
     body::before {
       content: '';
       position: fixed;
@@ -44,6 +46,28 @@
       background-size: 70px 70px;
       mask-image: radial-gradient(ellipse 70% 55% at 50% 15%, black 45%, transparent 100%);
       z-index: -2;
+      animation: grid-shift 28s linear infinite;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to bottom, transparent 0%, rgba(73, 217, 255, 0.03) 45%, transparent 100%);
+      transform: translateY(-100%);
+      animation: scanline 11s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes grid-shift {
+      from { transform: translateY(0); }
+      to { transform: translateY(70px); }
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
     }
 
     .orb {
@@ -75,6 +99,12 @@
       background: rgba(7, 11, 20, 0.75);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--line);
+      transition: background .35s ease, border-color .35s ease;
+    }
+
+    .topbar.scrolled {
+      background: rgba(7, 11, 20, 0.92);
+      border-bottom-color: var(--line-strong);
     }
 
     .topbar-inner {
@@ -89,8 +119,30 @@
     .logo span { color: var(--accent-2); }
 
     .nav { display: flex; gap: 22px; flex-wrap: wrap; }
-    .nav a { text-decoration: none; font-size: .92rem; color: var(--muted); transition: color .2s; }
+    .nav a {
+      text-decoration: none;
+      font-size: .92rem;
+      color: var(--muted);
+      transition: color .2s;
+      position: relative;
+      padding-bottom: 3px;
+    }
+
+    .nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .25s ease;
+    }
+
     .nav a:hover { color: var(--white); }
+    .nav a:hover::after { transform: scaleX(1); }
 
     section { padding: 86px 0; }
 
@@ -148,6 +200,9 @@
       background: linear-gradient(120deg, var(--accent), var(--accent-2));
       box-shadow: 0 0 30px rgba(95, 133, 255, .35);
     }
+    .btn-primary:hover {
+      box-shadow: 0 0 42px rgba(95, 133, 255, .55);
+    }
     .btn-secondary { color: var(--text); border-color: var(--line-strong); background: rgba(17, 27, 49, 0.55); }
 
     .contacts { display: flex; gap: 10px 18px; flex-wrap: wrap; color: #bfd0ff; font-size: .94rem; }
@@ -159,6 +214,13 @@
       padding: 28px;
       box-shadow: 0 24px 64px rgba(5, 10, 23, .55);
       animation: floaty 7s ease-in-out infinite;
+      transform-style: preserve-3d;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .panel:hover {
+      border-color: var(--line-strong);
+      box-shadow: 0 30px 80px rgba(5, 10, 23, .7);
     }
 
     @keyframes floaty {
@@ -199,6 +261,12 @@
       border-radius: 16px;
       background: rgba(12, 20, 37, .85);
       backdrop-filter: blur(2px);
+      transition: transform .25s ease, border-color .25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--line-strong);
     }
 
     .who-grid,
@@ -283,13 +351,19 @@
 
     .footer strong, .footer a { color: var(--white); text-decoration: none; }
 
-    .fade-up { opacity: 0; transform: translateY(20px); animation: reveal .7s ease forwards; }
-    .d2 { animation-delay: .15s; }
-    .d3 { animation-delay: .3s; }
-
-    @keyframes reveal {
-      to { opacity: 1; transform: translateY(0); }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .8s ease, transform .8s cubic-bezier(.2,.65,.2,1);
     }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .d2 { transition-delay: .1s; }
+    .d3 { transition-delay: .22s; }
 
     @media (max-width: 980px) {
       .hero-grid,
@@ -325,7 +399,7 @@
   <main>
     <section class="hero">
       <div class="container hero-grid">
-        <div class="fade-up">
+        <div class="reveal">
           <span class="eyebrow">Quality and Safety First</span>
           <h1>BM Masters</h1>
           <p>Regional telecom construction and field-services contractor supporting wireless deployments, integration troubleshooting, and operational logistics across NC, SC, GA, and VA.</p>
@@ -340,7 +414,7 @@
           </div>
         </div>
 
-        <aside class="panel fade-up d2">
+        <aside class="panel reveal d2" id="tilt-panel">
           <h3>Core Service Areas</h3>
           <ul class="hero-list">
             <li><span class="mark">01</span><span><strong>Wireless Construction</strong><br/>Tower builds, upgrades, and infrastructure rollout support.</span></li>
@@ -353,13 +427,13 @@
 
     <section id="about">
       <div class="container">
-        <div class="section-heading fade-up">
+        <div class="section-heading reveal">
           <span class="eyebrow">Who we are</span>
           <h2>Built for responsive execution in telecom field operations.</h2>
         </div>
         <div class="who-grid">
-          <article class="map-card card fade-up d2">Regional support radius: 300–400 miles from Charlotte, NC.</article>
-          <article class="text-card card fade-up d3">
+          <article class="map-card card reveal d2">Regional support radius: 300–400 miles from Charlotte, NC.</article>
+          <article class="text-card card reveal d3">
             <p><strong>BM Masters</strong> supports Tier-1 vendors and carriers with project management, crew deployment, and operational discipline.</p>
             <p>Our leadership team and field specialists bring carrier-side experience across Verizon, T-Mobile, AT&T, and multi-vendor environments.</p>
             <p>We focus on safe execution, schedule reliability, and clear handoffs via one operational hub from kickoff to closeout.</p>
@@ -370,29 +444,29 @@
 
     <section id="services" class="services">
       <div class="container">
-        <div class="section-heading fade-up">
+        <div class="section-heading reveal">
           <span class="eyebrow">Services</span>
           <h2>Execution support from build to closeout.</h2>
         </div>
         <div class="service-grid">
-          <article class="service-card card fade-up d2"><h3>Wireless Construction</h3><p>Site construction, upgrades, and deployment support for active network programs.</p></article>
-          <article class="service-card card fade-up d2"><h3>Integration Troubleshooting</h3><p>On-site diagnostics and stabilization support for complex integration issues.</p></article>
-          <article class="service-card card fade-up d2"><h3>Tiger Teams</h3><p>Rapid response teams for schedule recovery and critical project milestones.</p></article>
-          <article class="service-card card fade-up d3"><h3>Operational HUB</h3><p>Centralized coordination across crews, market leads, and delivery workflows.</p></article>
-          <article class="service-card card fade-up d3"><h3>Logistics Support</h3><p>Field logistics planning and material flow support for uninterrupted operations.</p></article>
-          <article class="service-card card fade-up d3"><h3>Documentation & COP Discipline</h3><p>Structured closeout packages and process adherence for program compliance.</p></article>
+          <article class="service-card card reveal d2"><h3>Wireless Construction</h3><p>Site construction, upgrades, and deployment support for active network programs.</p></article>
+          <article class="service-card card reveal d2"><h3>Integration Troubleshooting</h3><p>On-site diagnostics and stabilization support for complex integration issues.</p></article>
+          <article class="service-card card reveal d2"><h3>Tiger Teams</h3><p>Rapid response teams for schedule recovery and critical project milestones.</p></article>
+          <article class="service-card card reveal d3"><h3>Operational HUB</h3><p>Centralized coordination across crews, market leads, and delivery workflows.</p></article>
+          <article class="service-card card reveal d3"><h3>Logistics Support</h3><p>Field logistics planning and material flow support for uninterrupted operations.</p></article>
+          <article class="service-card card reveal d3"><h3>Documentation & COP Discipline</h3><p>Structured closeout packages and process adherence for program compliance.</p></article>
         </div>
       </div>
     </section>
 
     <section id="credentials">
       <div class="container">
-        <div class="section-heading fade-up">
+        <div class="section-heading reveal">
           <span class="eyebrow">Compliance & credentials</span>
           <h2>Low-risk, ready-to-deploy partner profile.</h2>
         </div>
         <div class="credentials-wrap">
-          <div class="logo-cloud card fade-up d2">
+          <div class="logo-cloud card reveal d2">
             <div class="logo-chip">Ericsson</div>
             <div class="logo-chip">T-Mobile</div>
             <div class="logo-chip">Verizon</div>
@@ -402,7 +476,7 @@
             <div class="logo-chip">NATE</div>
             <div class="logo-chip">Avetta</div>
           </div>
-          <ul class="checklist card fade-up d3">
+          <ul class="checklist card reveal d3">
             <li>COI insurance coverage aligned with carrier and prime requirements.</li>
             <li>General Liability, Workers’ Compensation, Auto, and Umbrella as required.</li>
             <li>Avetta and Compli / OneVizion approved.</li>
@@ -422,5 +496,39 @@
       <div>Markets served: NC · SC · GA · VA</div>
     </div>
   </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    const topbar = document.querySelector('.topbar');
+    window.addEventListener('scroll', () => {
+      topbar.classList.toggle('scrolled', window.scrollY > 12);
+    }, { passive: true });
+
+    const tiltPanel = document.getElementById('tilt-panel');
+    if (tiltPanel) {
+      tiltPanel.addEventListener('mousemove', (e) => {
+        const rect = tiltPanel.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rotateY = (x - 0.5) * 8;
+        const rotateX = (0.5 - y) * 8;
+        tiltPanel.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      tiltPanel.addEventListener('mouseleave', () => {
+        tiltPanel.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
+      });
+    }
+  </script>
 </body>
 </html>
