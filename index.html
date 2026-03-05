@@ -3,566 +3,421 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BM Masters | Telecom Execution Partner</title>
+  <title>BM Masters | Operational Field Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #050505;
-      --bg-2: #0b0b0b;
-      --panel: rgba(18, 18, 18, 0.72);
-      --text: #e9e9e9;
-      --muted: #a3a3a3;
-      --line: rgba(255, 255, 255, 0.18);
-      --line-strong: rgba(255, 255, 255, 0.4);
-      --accent: #ff6a3d;
-      --accent-2: #ffd2c3;
-      --white: #ffffff;
-      --radius: 18px;
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      --ink: #16181b;
+      --ink-soft: #1f2125;
+      --paper: #d8d9db;
+      --paper-2: #cfd1d3;
+      --line: rgba(22, 24, 27, 0.24);
+      --muted: #5a5d62;
+      --accent: #ff5b47;
+      --accent-deep: #ff4b3f;
+      --white: #f6f6f6;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html, body { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      color: var(--text);
-      line-height: 1.6;
-      background:
-        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.08) 0, transparent 34%),
-        radial-gradient(circle at 83% 8%, rgba(255, 255, 255, 0.06) 0, transparent 33%),
-        linear-gradient(145deg, var(--bg), var(--bg-2));
-      min-height: 100vh;
-      overflow-x: hidden;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.35;
     }
 
-    body::before,
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
+    .mono {
+      font-family: 'Share Tech Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
     }
 
-    body::before {
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(ellipse 72% 60% at 50% 10%, black 40%, transparent 100%);
-      animation: grid-pan 30s linear infinite;
-    }
-
-    body::after {
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 5px,
-        rgba(255, 255, 255, 0.03) 6px,
-        transparent 8px
-      );
-      opacity: 0.5;
-    }
-
-    @keyframes grid-pan {
-      from { transform: translateY(0); }
-      to { transform: translateY(64px); }
-    }
-
-    .glow {
-      position: fixed;
-      width: min(42vw, 620px);
-      aspect-ratio: 1;
-      border-radius: 50%;
-      filter: blur(54px);
-      opacity: 0.12;
-      pointer-events: none;
-      z-index: -2;
-      animation: float 12s ease-in-out infinite alternate;
-    }
-
-    .glow.one { background: #ff6a3d; top: -16vw; left: -8vw; }
-    .glow.two { background: #6b6b6b; right: -15vw; top: 16vh; animation-delay: 3s; }
-    .glow.three { background: #2d2d2d; left: 28vw; bottom: -18vw; animation-delay: 6s; }
-
-    @keyframes float {
-      from { transform: translate(0, 0) scale(1); }
-      to { transform: translate(24px, 46px) scale(1.1); }
-    }
-
-    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .container { width: min(1240px, 100%); margin: 0 auto; }
+    .frame { border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
 
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 20;
-      border-bottom: 1px solid transparent;
-      background: rgba(5, 5, 5, 0.62);
-      backdrop-filter: blur(14px);
-      transition: border-color .35s ease, background .35s ease;
+      z-index: 50;
+      background: rgba(216, 217, 219, 0.86);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
     }
 
-    .topbar.scrolled { border-bottom-color: var(--line); background: rgba(5, 5, 5, 0.93); }
-
     .topbar-inner {
-      min-height: 74px;
+      min-height: 82px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      padding: 0 28px;
     }
 
-    .logo {
-      text-decoration: none;
-      color: var(--white);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      font-size: 1.2rem;
-    }
-
-    .logo span {
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .nav { display: flex; gap: 22px; }
-    .nav a {
-      text-decoration: none;
-      color: var(--muted);
-      font-size: .9rem;
-      transition: color .2s ease;
-      position: relative;
-      padding: 4px 0;
-    }
-
-    .nav a::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .24s ease;
-    }
-
-    .nav a:hover { color: var(--white); }
-    .nav a:hover::after { transform: scaleX(1); }
-
-    section { padding: 90px 0; }
-
-    .hero {
-      padding-top: 72px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-    }
-
-    .hero-grid {
-      min-height: min(86vh, 760px);
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      align-items: center;
-      gap: 36px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
+    .brand {
+      display: flex;
       align-items: center;
       gap: 10px;
-      letter-spacing: .12em;
-      font-size: .73rem;
-      text-transform: uppercase;
-      color: var(--accent-2);
-      margin-bottom: 16px;
-    }
-
-    .eyebrow::before {
-      content: '';
-      width: 18px;
-      height: 1px;
-      background: var(--accent-2);
-    }
-
-    h1 {
-      font-size: clamp(2.3rem, 5.4vw, 5.3rem);
-      line-height: .98;
-      letter-spacing: -0.045em;
-      color: var(--white);
-      margin-bottom: 18px;
-      max-width: 780px;
-    }
-
-    .hero p { color: #b8b8b8; max-width: 660px; margin-bottom: 30px; }
-
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 26px; }
-
-    .btn {
-      border-radius: 11px;
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
       text-decoration: none;
-      font-weight: 600;
-      font-size: .91rem;
-      padding: 12px 18px;
-      transition: transform .2s ease, box-shadow .25s ease, border-color .25s ease;
-      border: 1px solid transparent;
+      color: var(--ink);
     }
 
-    .btn:hover { transform: translateY(-2px); }
-
-    .btn-primary {
-      color: #fff;
-      background: linear-gradient(110deg, #ff6a3d, #ffb197);
-      box-shadow: 0 0 34px rgba(255, 106, 61, .28);
+    .brand-mark {
+      width: 20px;
+      aspect-ratio: 1;
+      border: 5px solid var(--ink);
+      border-left: 0;
+      border-bottom: 0;
+      transform: rotate(45deg);
     }
 
-    .btn-primary:hover { box-shadow: 0 0 52px rgba(255, 106, 61, .38); }
-    .btn-secondary { color: var(--text); border-color: var(--line); background: rgba(20, 20, 20, 0.55); }
-    .btn-secondary:hover { border-color: var(--line-strong); }
-
-    .contacts { display: flex; flex-wrap: wrap; gap: 8px 16px; color: #c2c2c2; font-size: .93rem; }
-
-    .panel,
-    .card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(160deg, rgba(24, 24, 24, 0.92), rgba(12, 12, 12, 0.78));
-      box-shadow: var(--shadow);
-    }
-
-    .panel {
-      padding: 28px;
-      animation: panel-float 7s ease-in-out infinite;
-      transform-style: preserve-3d;
-      transition: border-color .25s ease, transform .25s ease;
-    }
-
-    @keyframes panel-float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    .panel:hover { border-color: var(--line-strong); }
-    .panel h3 { color: var(--white); margin-bottom: 14px; }
-
-    .hero-list {
-      list-style: none;
-      display: grid;
-      gap: 12px;
-    }
-
-    .hero-list li {
-      display: grid;
-      grid-template-columns: 30px 1fr;
-      gap: 11px;
-      padding: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-      background: rgba(30, 30, 30, 0.55);
-    }
-
-    .mark {
-      width: 30px;
-      height: 30px;
+    .menu-pill {
+      border: 1px solid rgba(22, 24, 27, 0.25);
+      background: #cbcccf;
+      border-radius: 999px;
+      min-width: 138px;
+      padding: 12px 20px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border-radius: 8px;
-      font-size: .76rem;
-      font-weight: 700;
-      color: var(--accent-2);
-      background: rgba(255, 255, 255, 0.1);
+      gap: 11px;
+      color: #2d3138;
+      text-decoration: none;
+      transition: transform .25s ease, background .25s ease;
     }
 
-    .section-heading { margin-bottom: 30px; }
-    .section-heading h2 {
-      color: var(--white);
-      font-size: clamp(1.8rem, 3.2vw, 3rem);
-      letter-spacing: -0.03em;
-      max-width: 760px;
+    .menu-pill:hover { transform: translateY(-1px); background: #d9dadd; }
+    .hamburger { display: grid; gap: 6px; }
+    .hamburger span { display: block; width: 26px; height: 2px; background: #2d3138; }
+    .menu-pill b { font-size: .95rem; color: #3391ff; font-weight: 500; }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background: var(--accent);
+      color: #16181b;
     }
 
-    .who-grid,
-    .credentials-wrap {
+    .hero-grid {
       display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      gap: 18px;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 30px;
+      min-height: 58vh;
+      padding: 56px 28px 50px;
     }
 
-    .map-card {
-      min-height: 324px;
-      padding: 24px;
-      display: flex;
-      align-items: end;
-      color: #efefef;
-      font-weight: 600;
-      background:
-        radial-gradient(circle at 18% 18%, rgba(255,255,255,0.08), transparent 36%),
-        repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 8px),
-        linear-gradient(140deg, rgba(36, 36, 36, 0.86), rgba(10, 10, 10, 0.85));
+    .hero h1 {
+      font-size: clamp(3.2rem, 10vw, 7.8rem);
+      line-height: .88;
+      letter-spacing: -0.06em;
+      max-width: 700px;
     }
 
-    .text-card { padding: 24px; color: #b0b0b0; }
-    .text-card p + p { margin-top: 12px; }
-
-    .services {
-      border-top: 1px solid rgba(255, 255, 255, 0.14);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(8, 8, 8, 0.52);
-    }
-
-    .service-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .service-card {
-      padding: 22px;
-      transition: transform .24s ease, border-color .24s ease, box-shadow .24s ease;
-    }
-
-    .service-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--line-strong);
-      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.72);
-    }
-
-    .service-card h3 { color: var(--white); margin-bottom: 8px; font-size: 1.02rem; }
-    .service-card p { color: #b6b6b6; font-size: .94rem; }
-
-    .logo-cloud {
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(120px, 1fr));
-      gap: 10px;
-    }
-
-    .logo-chip {
-      text-align: center;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      padding: 12px 10px;
-      color: #e1e1e1;
-      font-weight: 650;
-      background: rgba(26, 26, 26, 0.7);
-      transition: border-color .2s ease;
-    }
-
-    .logo-chip:hover { border-color: var(--line-strong); }
-
-    .checklist {
-      list-style: none;
-      padding: 24px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .checklist li {
-      color: #cdcdcd;
+    .hero-copy {
+      align-self: center;
+      font-size: clamp(1.2rem, 2.5vw, 3.1rem);
       font-weight: 500;
-      display: grid;
-      grid-template-columns: 20px 1fr;
-      gap: 10px;
+      max-width: 560px;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
     }
 
-    .checklist li::before { content: '✓'; color: var(--accent-2); font-weight: 800; }
+    .status-band {
+      display: grid;
+      grid-template-columns: 1.6fr .9fr;
+      border-bottom: 1px solid var(--line);
+      min-height: 420px;
+    }
+
+    .status-left {
+      background: radial-gradient(circle at 50% 45%, #2b2d31, #16181b 70%);
+      color: #d6d7d9;
+      padding: 48px 30px;
+      border-right: 1px solid rgba(255,255,255,.1);
+      position: relative;
+    }
+
+    .status-left h2 { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 18px; letter-spacing: -0.02em; }
+    .status-left ul { list-style: none; font-size: 1.72rem; line-height: 1.22; color: #b9bcc1; }
+
+    .status-left ul li::before { content: attr(data-n) '. '; color: #7f848d; margin-right: 6px; }
+
+    .status-left .matrix {
+      position: absolute;
+      left: 30px;
+      bottom: 34px;
+      color: #8a8e95;
+      font-size: .95rem;
+      line-height: 1.2;
+      white-space: pre;
+    }
+
+    .status-right {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .status-copy {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      padding: 38px 28px;
+      display: grid;
+      align-content: center;
+      font-size: clamp(1.8rem, 3vw, 3.3rem);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      font-weight: 500;
+    }
+
+    .status-cta {
+      background: var(--accent);
+      padding: 34px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .status-cta .arrow { font-size: clamp(3.1rem, 8vw, 6.4rem); line-height: 1; align-self: end; }
+    .status-cta a { color: var(--ink); text-decoration: none; font-size: clamp(1.8rem, 3.2vw, 3.5rem); font-weight: 600; line-height: .95; }
+
+    .cards-intro {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      padding: 30px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+    }
+
+    .cards-intro h2 { font-size: clamp(2rem, 4.8vw, 4rem); letter-spacing: -0.04em; line-height: .95; }
+    .nav-circles { display: flex; gap: 12px; }
+    .nav-circles span {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 2rem;
+    }
+
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cap-card {
+      min-height: 550px;
+      padding: 36px 28px 28px;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .cap-card:last-child { border-right: 0; }
+    .icon { width: 132px; height: 132px; margin-bottom: 8px; }
+    .icon.orb { border: 2px solid #7e8289; border-radius: 50%; position: relative; }
+    .icon.orb::before, .icon.orb::after { content: ''; position: absolute; inset: 18px; border: 1px solid #7e8289; border-radius: 50%; }
+    .icon.dots {
+      border-radius: 50%;
+      background: radial-gradient(circle, #777 2px, transparent 2px);
+      background-size: 8px 8px;
+      mask: radial-gradient(circle at 50% 50%, black 44%, transparent 46%);
+      border: 1px solid #92959a;
+    }
+    .icon.star { position: relative; }
+    .icon.star::before { content: ''; position: absolute; inset: 0; background:
+      repeating-conic-gradient(from 0deg, #767a80 0 2deg, transparent 2deg 16deg); border-radius: 50%; }
+
+    .cap-card h3 { font-size: clamp(2.2rem, 4vw, 4rem); letter-spacing: -0.03em; line-height: .95; }
+    .cap-card p { color: #34383e; font-size: 1.48rem; line-height: 1.2; }
+
+    .pill-btn {
+      margin-top: auto;
+      border: 1px solid rgba(26, 27, 31, .42);
+      border-radius: 999px;
+      text-decoration: none;
+      color: #2b2f34;
+      font-size: 1.32rem;
+      padding: 13px 26px;
+      align-self: start;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .news-image-large {
+      min-height: 690px;
+      background:
+        linear-gradient(to top, rgba(0,0,0,.45), transparent 40%),
+        url('https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?auto=format&fit=crop&w=1400&q=80&sat=-100') center/cover;
+      border-right: 1px solid var(--line);
+    }
+
+    .news-stack { display: grid; grid-template-rows: repeat(2, minmax(250px, 1fr)); }
+    .news-item {
+      padding: 30px 24px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      align-content: center;
+      gap: 8px;
+    }
+
+    .news-item:last-child { border-bottom: 0; }
+    .news-item h4 { font-size: clamp(1.8rem, 3.1vw, 3.4rem); line-height: 1; letter-spacing: -0.03em; }
+    .news-item .date { font-size: 1.12rem; color: #5d6268; }
+    .news-item p { font-size: 1.32rem; color: #30343a; }
 
     .footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.14);
-      padding: 36px 0;
-      background: #050505;
+      min-height: 200px;
+      background: linear-gradient(90deg, #1b1d21, #23262b);
+      color: #dadadc;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 38px 20px;
     }
 
-    .footer-grid {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px 24px;
-      flex-wrap: wrap;
-      color: #9c9c9c;
-    }
-
-    .footer strong,
-    .footer a { color: var(--white); text-decoration: none; }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .9s ease, transform .9s cubic-bezier(.2, .65, .2, 1);
-    }
-
-    .reveal.show { opacity: 1; transform: translateY(0); }
-    .d2 { transition-delay: .12s; }
-    .d3 { transition-delay: .22s; }
+    .footer b { font-size: clamp(1.9rem, 3vw, 3.1rem); letter-spacing: -0.03em; }
+    .footer p { color: #b2b5b9; margin-top: 10px; font-size: 1.2rem; }
 
     @media (max-width: 980px) {
       .hero-grid,
-      .who-grid,
-      .credentials-wrap { grid-template-columns: 1fr; }
-      .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .status-band,
+      .cap-grid,
+      .news-grid { grid-template-columns: 1fr; }
+
+      .status-right { grid-template-rows: auto auto; }
+      .cap-card { border-right: 0; border-top: 1px solid var(--line); min-height: auto; }
+      .news-image-large { border-right: 0; border-bottom: 1px solid var(--line); min-height: 500px; }
     }
 
     @media (max-width: 680px) {
-      .nav { display: none; }
-      section { padding: 70px 0; }
-      .service-grid { grid-template-columns: 1fr; }
-      .hero { padding-top: 50px; }
+      .topbar-inner,
+      .hero-grid,
+      .cards-intro,
+      .status-left,
+      .status-copy,
+      .status-cta,
+      .cap-card,
+      .news-item { padding-left: 18px; padding-right: 18px; }
+
+      .menu-pill { min-width: 116px; padding: 10px 14px; }
+      .menu-pill b { font-size: .84rem; }
+      .brand { font-size: 1.7rem; }
+      .status-left ul { font-size: 1.2rem; }
+      .status-left .matrix { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="glow one"></div>
-  <div class="glow two"></div>
-  <div class="glow three"></div>
-
   <header class="topbar">
-    <div class="container topbar-inner">
-      <a href="#" class="logo">BM <span>Masters</span></a>
-      <nav class="nav">
-        <a href="#about">Who We Are</a>
-        <a href="#services">Services</a>
-        <a href="#credentials">Compliance</a>
-        <a href="#contact">Contact</a>
-      </nav>
+    <div class="container frame topbar-inner">
+      <a class="brand" href="#">
+        <span class="brand-mark"></span>
+        <span>BM MASTERS</span>
+      </a>
+      <a class="menu-pill" href="#contact" aria-label="Open contact section">
+        <span class="hamburger" aria-hidden="true"><span></span><span></span></span>
+        <b class="mono">Menu</b>
+      </a>
     </div>
   </header>
 
-  <main>
+  <main class="container frame">
     <section class="hero">
-      <div class="container hero-grid">
-        <div class="reveal">
-          <span class="eyebrow">Quality and Safety First</span>
-          <h1>BM Masters. Telecom Execution With Mission-Level Discipline.</h1>
-          <p>Regional telecom construction and field-services contractor supporting wireless deployments, integration troubleshooting, and operational logistics across NC, SC, GA, and VA.</p>
-          <div class="hero-actions">
-            <a href="#contact" class="btn btn-primary">Request consultation</a>
-            <a href="#services" class="btn btn-secondary">View services</a>
-          </div>
-          <div class="contacts">
-            <span>info@bm-masters.com</span>
-            <span>267 356 2999</span>
-            <span>267 592 7107</span>
-          </div>
-        </div>
-
-        <aside class="panel reveal d2" id="tilt-panel">
-          <h3>Core Service Areas</h3>
-          <ul class="hero-list">
-            <li><span class="mark">01</span><span><strong>Wireless Construction</strong><br/>Tower builds, upgrades, and infrastructure rollout support.</span></li>
-            <li><span class="mark">02</span><span><strong>Integration & Tiger Teams</strong><br/>Field troubleshooting and rapid-response execution.</span></li>
-            <li><span class="mark">03</span><span><strong>Operational HUB</strong><br/>Coordinated logistics and program-level support.</span></li>
-          </ul>
-        </aside>
+      <div class="hero-grid">
+        <h1>Op<br/>Field<br/>Intelligence</h1>
+        <p class="hero-copy">Operational intelligence for every site, every crew, every rollout.</p>
       </div>
     </section>
 
-    <section id="about">
-      <div class="container">
-        <div class="section-heading reveal">
-          <span class="eyebrow">Who we are</span>
-          <h2>Built for responsive execution in telecom field operations.</h2>
-        </div>
-        <div class="who-grid">
-          <article class="map-card card reveal d2">Regional support radius: 300–400 miles from Charlotte, NC.</article>
-          <article class="text-card card reveal d3">
-            <p><strong>BM Masters</strong> supports Tier-1 vendors and carriers with project management, crew deployment, and operational discipline.</p>
-            <p>Our leadership team and field specialists bring carrier-side experience across Verizon, T-Mobile, AT&amp;T, and multi-vendor environments.</p>
-            <p>We focus on safe execution, schedule reliability, and clear handoffs via one operational hub from kickoff to closeout.</p>
-          </article>
+    <section class="status-band" id="about">
+      <article class="status-left">
+        <h2>System Status</h2>
+        <ul class="mono">
+          <li data-n="01">RAN Buildouts</li>
+          <li data-n="02">Integration</li>
+          <li data-n="03">Electrical</li>
+          <li data-n="04">Logistics</li>
+          <li data-n="05">Closeout Packs</li>
+        </ul>
+        <div class="matrix mono">01111100  10010101  10101100
+01011110  11101100  10110101
+00001111  01011110  00111111
+
+10110111  01110111  01111100
+00000101  01000101  10010010
+11011100  11010110  01001111</div>
+      </article>
+
+      <div class="status-right">
+        <div class="status-copy">Powering actionable execution for carrier and infrastructure programs.</div>
+        <div class="status-cta">
+          <div class="arrow">↗</div>
+          <a href="#services">Explore the platform.</a>
         </div>
       </div>
     </section>
 
-    <section id="services" class="services">
-      <div class="container">
-        <div class="section-heading reveal">
-          <span class="eyebrow">Services</span>
-          <h2>Execution support from build to closeout.</h2>
-        </div>
-        <div class="service-grid">
-          <article class="service-card card reveal d2"><h3>Wireless Construction</h3><p>Site construction, upgrades, and deployment support for active network programs.</p></article>
-          <article class="service-card card reveal d2"><h3>Integration Troubleshooting</h3><p>On-site diagnostics and stabilization support for complex integration issues.</p></article>
-          <article class="service-card card reveal d2"><h3>Tiger Teams</h3><p>Rapid response teams for schedule recovery and critical project milestones.</p></article>
-          <article class="service-card card reveal d3"><h3>Operational HUB</h3><p>Centralized coordination across crews, market leads, and delivery workflows.</p></article>
-          <article class="service-card card reveal d3"><h3>Logistics Support</h3><p>Field logistics planning and material flow support for uninterrupted operations.</p></article>
-          <article class="service-card card reveal d3"><h3>Documentation &amp; COP Discipline</h3><p>Structured closeout packages and process adherence for program compliance.</p></article>
-        </div>
-      </div>
+    <section class="cards-intro" id="services">
+      <h2>Operational<br/>Intelligence Solutions</h2>
+      <div class="nav-circles"><span>←</span><span>→</span></div>
     </section>
 
-    <section id="credentials">
-      <div class="container">
-        <div class="section-heading reveal">
-          <span class="eyebrow">Compliance &amp; credentials</span>
-          <h2>Low-risk, ready-to-deploy partner profile.</h2>
-        </div>
-        <div class="credentials-wrap">
-          <div class="logo-cloud card reveal d2">
-            <div class="logo-chip">Ericsson</div>
-            <div class="logo-chip">T-Mobile</div>
-            <div class="logo-chip">Verizon</div>
-            <div class="logo-chip">AT&amp;T</div>
-            <div class="logo-chip">American Tower</div>
-            <div class="logo-chip">SBA</div>
-            <div class="logo-chip">NATE</div>
-            <div class="logo-chip">Avetta</div>
-          </div>
-          <ul class="checklist card reveal d3">
-            <li>COI insurance coverage aligned with carrier and prime requirements.</li>
-            <li>General Liability, Workers’ Compensation, Auto, and Umbrella as required.</li>
-            <li>Avetta and Compli / OneVizion approved.</li>
-            <li>Approved to work on American Tower and SBA sites.</li>
-            <li>NATE member with safety-first operating culture.</li>
-            <li>General contractor licensing path in progress (NC/SC).</li>
-          </ul>
-        </div>
+    <section class="cap-grid">
+      <article class="cap-card">
+        <div class="icon orb" aria-hidden="true"></div>
+        <h3>Wireless<br/>Construction</h3>
+        <p class="mono">ANALYZE SCOPE, CREW LOAD, SAFETY GATES AND MARKET READINESS FOR FASTER SITE ACTIVATION.</p>
+        <a class="pill-btn mono" href="#contact">Explore</a>
+      </article>
+      <article class="cap-card">
+        <div class="icon dots" aria-hidden="true"></div>
+        <h3>Predictive<br/>Maintenance</h3>
+        <p class="mono">TRANSFORM FIELD SIGNALS INTO PROACTIVE TASKING TO KEEP FLEETS SAFE AND ROLL-OUTS ON SCHEDULE.</p>
+        <a class="pill-btn mono" href="#contact">Explore</a>
+      </article>
+      <article class="cap-card">
+        <div class="icon star" aria-hidden="true"></div>
+        <h3>Fleet<br/>Compliance</h3>
+        <p class="mono">PROCESS CHECKLISTS, LOGS AND QA DATA TO IDENTIFY RISKS EARLY AND ENFORCE DELIVERY DISCIPLINE.</p>
+        <a class="pill-btn mono" href="#contact">Explore</a>
+      </article>
+    </section>
+
+    <section class="news-grid" id="credentials">
+      <div class="news-image-large"></div>
+      <div class="news-stack">
+        <article class="news-item">
+          <h4>BM Masters scales multi-market integration support across NC, SC, GA and VA.</h4>
+          <div class="date mono">February 23, 2026</div>
+          <p class="mono">OPERATIONAL HUB MODEL COORDINATES CREWS, MATERIALS AND ISSUE ESCALATIONS FOR CARRIER PROGRAMS.</p>
+        </article>
+        <article class="news-item" id="contact">
+          <h4>Contact: info@bm-masters.com · 267 356 2999 · 267 592 7107</h4>
+          <div class="date mono">Operational HQ · Charlotte Radius</div>
+          <p class="mono">COI READY · AVETTA / COMPLI TRACKED · TIER-1 DELIVERY PARTNER PROFILE.</p>
+        </article>
       </div>
     </section>
   </main>
 
-  <footer class="footer" id="contact">
-    <div class="container footer-grid">
-      <div><strong>BM Masters</strong><br/>Telecom Construction &amp; Field Services</div>
-      <div><a href="mailto:info@bm-masters.com">info@bm-masters.com</a><br/>267 356 2999 · 267 592 7107<br/><a href="https://www.bm-masters.com">www.bm-masters.com</a></div>
-      <div>Markets served: NC · SC · GA · VA</div>
+  <footer class="footer">
+    <div>
+      <b>BM Masters</b>
+      <p class="mono">TELECOM CONSTRUCTION & FIELD SERVICES · MISSION-GRADE EXECUTION</p>
     </div>
   </footer>
-
-  <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('show');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.14 });
-
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-
-    const topbar = document.querySelector('.topbar');
-    window.addEventListener('scroll', () => {
-      topbar.classList.toggle('scrolled', window.scrollY > 10);
-    }, { passive: true });
-
-    const tiltPanel = document.getElementById('tilt-panel');
-    if (tiltPanel) {
-      tiltPanel.addEventListener('mousemove', (event) => {
-        const rect = tiltPanel.getBoundingClientRect();
-        const x = (event.clientX - rect.left) / rect.width;
-        const y = (event.clientY - rect.top) / rect.height;
-        const rotateY = (x - 0.5) * 9;
-        const rotateX = (0.5 - y) * 9;
-        tiltPanel.style.transform = `perspective(950px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      });
-
-      tiltPanel.addEventListener('mouseleave', () => {
-        tiltPanel.style.transform = 'perspective(950px) rotateX(0deg) rotateY(0deg)';
-      });
-    }
-  </script>
 </body>
 </html>
