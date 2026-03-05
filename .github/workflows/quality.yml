@@ -7,15 +7,26 @@ on:
 jobs:
   lint-and-audit:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+      - name: Bootstrap repository without actions/checkout
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git init .
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git fetch --depth=1 origin "${{ github.sha }}"
+          git checkout --detach FETCH_HEAD
+
+      - name: Show tool versions
+        run: |
+          node --version
+          npm --version
+          python3 --version
+
       - name: Install dependencies
         run: |
           if [ -f package-lock.json ]; then
@@ -23,9 +34,12 @@ jobs:
           else
             npm install
           fi
+
       - name: Build page from partials
         run: npm run build
+
       - name: Run lint checks
         run: npm run lint
+
       - name: Lighthouse CI
         run: npm run lighthouse
