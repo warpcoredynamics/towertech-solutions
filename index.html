@@ -16,8 +16,8 @@
       --muted: #a3a3a3;
       --line: rgba(255, 255, 255, 0.18);
       --line-strong: rgba(255, 255, 255, 0.4);
-      --accent: #ffffff;
-      --accent-2: #d7d7d7;
+      --accent: #ff6a3d;
+      --accent-2: #ffd2c3;
       --white: #ffffff;
       --radius: 18px;
       --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
@@ -77,15 +77,15 @@
       aspect-ratio: 1;
       border-radius: 50%;
       filter: blur(54px);
-      opacity: 0.26;
+      opacity: 0.12;
       pointer-events: none;
       z-index: -2;
       animation: float 12s ease-in-out infinite alternate;
     }
 
-    .glow.one { background: #ffffff; top: -16vw; left: -8vw; }
-    .glow.two { background: #bdbdbd; right: -15vw; top: 16vh; animation-delay: 3s; }
-    .glow.three { background: #8f8f8f; left: 28vw; bottom: -18vw; animation-delay: 6s; }
+    .glow.one { background: #ff6a3d; top: -16vw; left: -8vw; }
+    .glow.two { background: #6b6b6b; right: -15vw; top: 16vh; animation-delay: 3s; }
+    .glow.three { background: #2d2d2d; left: 28vw; bottom: -18vw; animation-delay: 6s; }
 
     @keyframes float {
       from { transform: translate(0, 0) scale(1); }
@@ -214,11 +214,11 @@
 
     .btn-primary {
       color: #fff;
-      background: linear-gradient(110deg, #ffffff, #bdbdbd);
-      box-shadow: 0 0 34px rgba(255, 255, 255, .22);
+      background: linear-gradient(110deg, #ff6a3d, #ffb197);
+      box-shadow: 0 0 34px rgba(255, 106, 61, .28);
     }
 
-    .btn-primary:hover { box-shadow: 0 0 52px rgba(255, 255, 255, .36); }
+    .btn-primary:hover { box-shadow: 0 0 52px rgba(255, 106, 61, .38); }
     .btn-secondary { color: var(--text); border-color: var(--line); background: rgba(20, 20, 20, 0.55); }
     .btn-secondary:hover { border-color: var(--line-strong); }
 
@@ -299,8 +299,9 @@
       color: #efefef;
       font-weight: 600;
       background:
-        linear-gradient(140deg, rgba(40, 40, 40, 0.86), rgba(10, 10, 10, 0.8)),
-        url('https://images.unsplash.com/photo-1537420327992-d6e192287183?auto=format&fit=crop&w=1200&q=80') center/cover;
+        radial-gradient(circle at 18% 18%, rgba(255,255,255,0.08), transparent 36%),
+        repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 8px),
+        linear-gradient(140deg, rgba(36, 36, 36, 0.86), rgba(10, 10, 10, 0.85));
     }
 
     .text-card { padding: 24px; color: #b0b0b0; }
@@ -434,7 +435,7 @@
       <div class="container hero-grid">
         <div class="reveal">
           <span class="eyebrow">Quality and Safety First</span>
-          <h1>BM Masters. Precision Execution for Carrier Network Programs.</h1>
+          <h1>BM Masters. Telecom Execution With Mission-Level Discipline.</h1>
           <p>Regional telecom construction and field-services contractor supporting wireless deployments, integration troubleshooting, and operational logistics across NC, SC, GA, and VA.</p>
           <div class="hero-actions">
             <a href="#contact" class="btn btn-primary">Request consultation</a>
