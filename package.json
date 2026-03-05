@@ -1,0 +1,21 @@
+{
+  "name": "towertech-solutions",
+  "private": true,
+  "version": "1.0.0",
+  "description": "BM Masters static landing page",
+  "scripts": {
+    "build": "python3 tools/build.py",
+    "lint": "npm run lint:html && npm run lint:css && npm run lint:js",
+    "lint:html": "python3 tools/lint_html.py index.html",
+    "lint:css": "stylelint \"styles/**/*.css\"",
+    "lint:js": "eslint scripts/**/*.js",
+    "serve": "python3 -m http.server 4173",
+    "lighthouse": "lhci autorun --config=.lighthouserc.json"
+  },
+  "devDependencies": {
+    "@lhci/cli": "^0.14.0",
+    "eslint": "^9.20.0",
+    "stylelint": "^16.14.1",
+    "stylelint-config-standard": "^37.0.0"
+  }
+}

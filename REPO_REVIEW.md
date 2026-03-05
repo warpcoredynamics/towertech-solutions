@@ -74,3 +74,17 @@
    - stylelint/eslint (если появится tooling),
    - Lighthouse CI для перформанса и accessibility.
 4. При развитии проекта рассмотреть переход на легковесный SSG/фреймворк (например, Astro/Next static export).
+
+
+## Статус внедрения рекомендаций (обновление)
+
+В репозитории реализованы ключевые шаги эволюции:
+
+1. CSS и JS вынесены в отдельные файлы: `styles/main.css`, `scripts/main.js`.
+2. Страница разбита на partials в `src/partials/` и собирается через `tools/build.py`.
+3. Добавлен базовый quality-gate:
+   - локальный HTML-линтер `tools/lint_html.py`,
+   - конфиги `stylelint` и `eslint`,
+   - Lighthouse CI (`.lighthouserc.json`),
+   - CI workflow `.github/workflows/quality.yml`.
+4. Подготовлен план перехода на SSG: `docs/SSG_MIGRATION_PLAN.md`.
