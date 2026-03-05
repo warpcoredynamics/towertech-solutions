@@ -29,6 +29,42 @@
       line-height: 1.35;
     }
 
+
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mix-blend-mode: soft-light;
+      opacity: .4;
+      z-index: -1;
+      animation: gridShift 26s linear infinite;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to bottom, transparent 0%, rgba(255,91,71,.09) 45%, transparent 100%);
+      transform: translateY(-100%);
+      opacity: .5;
+      z-index: 3;
+      animation: scan 10s linear infinite;
+    }
+
+    @keyframes gridShift { from { transform: translateY(0);} to { transform: translateY(56px);} }
+    @keyframes scan { from { transform: translateY(-100%);} to { transform: translateY(100%);} }
+    @keyframes riseIn { from { opacity:0; transform: translateY(26px);} to { opacity:1; transform: translateY(0);} }
+    @keyframes pulseGlow { 0%,100% { box-shadow: 0 0 0 rgba(255,91,71,0);} 50% { box-shadow: 0 0 34px rgba(255,91,71,.34);} }
+    @keyframes spinSlow { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
+    @keyframes driftBg { from { background-position: center 50%; } to { background-position: center 56%; } }
+
     .mono {
       font-family: 'Share Tech Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       letter-spacing: .12em;
@@ -39,6 +75,7 @@
     .frame { border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
 
     .topbar {
+      transition: background .35s ease, border-color .35s ease;
       position: sticky;
       top: 0;
       z-index: 50;
@@ -56,6 +93,7 @@
     }
 
     .brand {
+      transition: transform .3s ease;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -90,15 +128,27 @@
       transition: transform .25s ease, background .25s ease;
     }
 
-    .menu-pill:hover { transform: translateY(-1px); background: #d9dadd; }
+    .menu-pill:hover { transform: translateY(-2px); background: #d9dadd; }
+    .brand:hover { transform: translateY(-2px); }
     .hamburger { display: grid; gap: 6px; }
     .hamburger span { display: block; width: 26px; height: 2px; background: #2d3138; }
     .menu-pill b { font-size: .95rem; color: #3391ff; font-weight: 500; }
 
     .hero {
       border-bottom: 1px solid var(--line);
-      background: var(--accent);
+      background: linear-gradient(160deg, var(--accent), var(--accent-deep));
       color: #16181b;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 25%, rgba(255,255,255,.2), transparent 38%);
+      pointer-events: none;
+      opacity: .45;
     }
 
     .hero-grid {
@@ -110,6 +160,7 @@
     }
 
     .hero h1 {
+      animation: riseIn .9s cubic-bezier(.2,.7,.2,1) both;
       font-size: clamp(3.2rem, 10vw, 7.8rem);
       line-height: .88;
       letter-spacing: -0.06em;
@@ -117,6 +168,7 @@
     }
 
     .hero-copy {
+      animation: riseIn .95s .12s cubic-bezier(.2,.7,.2,1) both;
       align-self: center;
       font-size: clamp(1.2rem, 2.5vw, 3.1rem);
       font-weight: 500;
@@ -133,6 +185,7 @@
     }
 
     .status-left {
+      overflow: hidden;
       background: radial-gradient(circle at 50% 45%, #2b2d31, #16181b 70%);
       color: #d6d7d9;
       padding: 48px 30px;
@@ -146,6 +199,7 @@
     .status-left ul li::before { content: attr(data-n) '. '; color: #7f848d; margin-right: 6px; }
 
     .status-left .matrix {
+      animation: pulseGlow 5s ease-in-out infinite;
       position: absolute;
       left: 30px;
       bottom: 34px;
@@ -180,8 +234,9 @@
       justify-content: space-between;
     }
 
-    .status-cta .arrow { font-size: clamp(3.1rem, 8vw, 6.4rem); line-height: 1; align-self: end; }
+    .status-cta .arrow { font-size: clamp(3.1rem, 8vw, 6.4rem); line-height: 1; align-self: end; transition: transform .28s ease; }
     .status-cta a { color: var(--ink); text-decoration: none; font-size: clamp(1.8rem, 3.2vw, 3.5rem); font-weight: 600; line-height: .95; }
+    .status-cta:hover .arrow { transform: translate(5px, -5px); }
 
     .cards-intro {
       background: var(--paper);
@@ -196,6 +251,7 @@
     .cards-intro h2 { font-size: clamp(2rem, 4.8vw, 4rem); letter-spacing: -0.04em; line-height: .95; }
     .nav-circles { display: flex; gap: 12px; }
     .nav-circles span {
+      transition: transform .25s ease, background .25s ease;
       width: 62px;
       height: 62px;
       border-radius: 50%;
@@ -205,6 +261,7 @@
       color: var(--paper);
       font-size: 2rem;
     }
+    .nav-circles span:hover { transform: translateY(-2px); background: #2a2e33; }
 
     .cap-grid {
       display: grid;
@@ -213,6 +270,7 @@
     }
 
     .cap-card {
+      transition: transform .3s ease, background .3s ease;
       min-height: 550px;
       padding: 36px 28px 28px;
       border-right: 1px solid var(--line);
@@ -222,7 +280,8 @@
     }
 
     .cap-card:last-child { border-right: 0; }
-    .icon { width: 132px; height: 132px; margin-bottom: 8px; }
+    .cap-card:hover { transform: translateY(-6px); background: #dedfe1; }
+    .icon { width: 132px; height: 132px; margin-bottom: 8px; transition: transform .35s ease; }
     .icon.orb { border: 2px solid #7e8289; border-radius: 50%; position: relative; }
     .icon.orb::before, .icon.orb::after { content: ''; position: absolute; inset: 18px; border: 1px solid #7e8289; border-radius: 50%; }
     .icon.dots {
@@ -234,12 +293,14 @@
     }
     .icon.star { position: relative; }
     .icon.star::before { content: ''; position: absolute; inset: 0; background:
-      repeating-conic-gradient(from 0deg, #767a80 0 2deg, transparent 2deg 16deg); border-radius: 50%; }
+      repeating-conic-gradient(from 0deg, #767a80 0 2deg, transparent 2deg 16deg); border-radius: 50%; animation: spinSlow 18s linear infinite; }
+    .cap-card:hover .icon { transform: scale(1.04); }
 
     .cap-card h3 { font-size: clamp(2.2rem, 4vw, 4rem); letter-spacing: -0.03em; line-height: .95; }
     .cap-card p { color: #34383e; font-size: 1.48rem; line-height: 1.2; }
 
     .pill-btn {
+      transition: transform .25s ease, background .25s ease, color .25s ease;
       margin-top: auto;
       border: 1px solid rgba(26, 27, 31, .42);
       border-radius: 999px;
@@ -249,6 +310,7 @@
       padding: 13px 26px;
       align-self: start;
     }
+    .pill-btn:hover { transform: translateY(-2px); background: var(--ink); color: var(--white); }
 
     .news-grid {
       display: grid;
@@ -257,6 +319,7 @@
     }
 
     .news-image-large {
+      animation: driftBg 14s ease-in-out infinite alternate;
       min-height: 690px;
       background:
         linear-gradient(to top, rgba(0,0,0,.45), transparent 40%),
@@ -266,6 +329,7 @@
 
     .news-stack { display: grid; grid-template-rows: repeat(2, minmax(250px, 1fr)); }
     .news-item {
+      transition: background .3s ease, transform .3s ease;
       padding: 30px 24px;
       border-bottom: 1px solid var(--line);
       display: grid;
@@ -274,6 +338,7 @@
     }
 
     .news-item:last-child { border-bottom: 0; }
+    .news-item:hover { background: #e1e2e4; transform: translateX(4px); }
     .news-item h4 { font-size: clamp(1.8rem, 3.1vw, 3.4rem); line-height: 1; letter-spacing: -0.03em; }
     .news-item .date { font-size: 1.12rem; color: #5d6268; }
     .news-item p { font-size: 1.32rem; color: #30343a; }
@@ -290,6 +355,9 @@
 
     .footer b { font-size: clamp(1.9rem, 3vw, 3.1rem); letter-spacing: -0.03em; }
     .footer p { color: #b2b5b9; margin-top: 10px; font-size: 1.2rem; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.65,.2,1); }
+    .reveal.show { opacity: 1; transform: translateY(0); }
 
     @media (max-width: 980px) {
       .hero-grid,
@@ -335,14 +403,14 @@
   </header>
 
   <main class="container frame">
-    <section class="hero">
+    <section class="hero reveal">
       <div class="hero-grid">
         <h1>Op<br/>Field<br/>Intelligence</h1>
         <p class="hero-copy">Operational intelligence for every site, every crew, every rollout.</p>
       </div>
     </section>
 
-    <section class="status-band" id="about">
+    <section class="status-band reveal" id="about">
       <article class="status-left">
         <h2>System Status</h2>
         <ul class="mono">
@@ -370,12 +438,12 @@
       </div>
     </section>
 
-    <section class="cards-intro" id="services">
+    <section class="cards-intro reveal" id="services">
       <h2>Operational<br/>Intelligence Solutions</h2>
       <div class="nav-circles"><span>←</span><span>→</span></div>
     </section>
 
-    <section class="cap-grid">
+    <section class="cap-grid reveal">
       <article class="cap-card">
         <div class="icon orb" aria-hidden="true"></div>
         <h3>Wireless<br/>Construction</h3>
@@ -396,7 +464,7 @@
       </article>
     </section>
 
-    <section class="news-grid" id="credentials">
+    <section class="news-grid reveal" id="credentials">
       <div class="news-image-large"></div>
       <div class="news-stack">
         <article class="news-item">
@@ -413,11 +481,32 @@
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="footer reveal">
     <div>
       <b>BM Masters</b>
       <p class="mono">TELECOM CONSTRUCTION & FIELD SERVICES · MISSION-GRADE EXECUTION</p>
     </div>
   </footer>
+
+  <script>
+    const topbar = document.querySelector('.topbar');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY > 10;
+      topbar.style.background = scrolled ? 'rgba(216, 217, 219, 0.96)' : 'rgba(216, 217, 219, 0.86)';
+      topbar.style.borderBottomColor = scrolled ? 'rgba(22,24,27,.35)' : 'rgba(22,24,27,.24)';
+    }, { passive: true });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  </script>
+
 </body>
 </html>
