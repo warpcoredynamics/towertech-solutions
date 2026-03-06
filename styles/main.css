@@ -885,3 +885,123 @@ section { border-bottom: 1px solid var(--line); }
   animation: blink-cursor .7s ease-in-out infinite;
   margin-left: 2px;
 }
+
+/* ── SVG ICON BASE ── */
+.icon-svg {
+  width: 138px;
+  height: 138px;
+  flex-shrink: 0;
+  margin-bottom: 4px;
+}
+
+/* ── ORBITAL — EXECUTION DISCIPLINE ── */
+.orb-ring-1 {
+  transform-origin: 60px 60px;
+  animation: orbit-spin 6s linear infinite;
+}
+
+.orb-ring-2 {
+  transform-origin: 60px 60px;
+  animation: orbit-spin 10s linear infinite reverse;
+  animation-delay: -2.5s;
+}
+
+.orb-ring-3 {
+  transform-origin: 60px 60px;
+  animation: orbit-spin 4s linear infinite;
+  animation-delay: -1.2s;
+}
+
+.orb-core {
+  transform-origin: 60px 60px;
+  animation: orb-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orb-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+}
+
+/* ── SHIELD — SAFETY & COMPLIANCE ── */
+.shield-body {
+  stroke: #7a7f87;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+}
+
+.cap-card.show .shield-body {
+  animation: draw-path 1.4s 0.15s cubic-bezier(.2, .65, .2, 1) forwards;
+}
+
+.shield-check {
+  stroke: #ff4d2e;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 72;
+  stroke-dashoffset: 72;
+}
+
+.cap-card.show .shield-check {
+  animation: draw-path 0.55s 1.55s ease forwards;
+}
+
+.shield-dot {
+  fill: #ff4d2e;
+  opacity: 0;
+}
+
+.cap-card.show .shield-dot {
+  animation: svg-fade-in 0.3s 2.1s ease forwards;
+}
+
+.shield-ring {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+}
+
+.cap-card.show .shield-ring {
+  animation: draw-path 0.4s 1.9s ease forwards;
+}
+
+@keyframes draw-path {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes svg-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── RADAR — RAPID FIELD RESPONSE ── */
+.radar-sweep {
+  transform-origin: 60px 60px;
+  animation: radar-spin 3s linear infinite;
+}
+
+.radar-ping-1 {
+  transform-origin: 60px 60px;
+  animation: radar-ping 3s 0s ease-out infinite;
+}
+
+.radar-ping-2 {
+  transform-origin: 60px 60px;
+  animation: radar-ping 3s -1.5s ease-out infinite;
+}
+
+@keyframes radar-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes radar-ping {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(13); opacity: 0; }
+}
