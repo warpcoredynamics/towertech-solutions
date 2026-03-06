@@ -180,7 +180,7 @@ body::after {
   font-weight: 700;
   letter-spacing: -0.02em;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .top-nav a {
@@ -339,7 +339,7 @@ section { border-bottom: 1px solid var(--line); }
   transition: transform .25s ease;
   color: var(--ink);
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .status-cta:hover .arrow { transform: translate(8px, -8px); }
@@ -765,6 +765,15 @@ section { border-bottom: 1px solid var(--line); }
 }
 
 /* ── STATUS CTA HOVER FILL ── */
+.cta-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .status-cta::before {
   content: '';
   position: absolute;
@@ -773,7 +782,7 @@ section { border-bottom: 1px solid var(--line); }
   transform: scaleY(0);
   transform-origin: bottom;
   transition: transform .4s cubic-bezier(.2, .65, .2, 1);
-  z-index: 0;
+  z-index: 1;
 }
 
 .status-cta:hover::before { transform: scaleY(1); }

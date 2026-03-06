@@ -295,3 +295,94 @@ document.querySelectorAll('.news-item').forEach((item) => {
     item.style.paddingLeft = '';
   });
 });
+
+/* ── CTA PARTICLE NETWORK ── */
+(function initCtaParticles() {
+  const canvas = document.querySelector('.cta-canvas');
+
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const COUNT = 32;
+  const CONNECT = 72;
+  let particles = [];
+  let raf;
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+
+  function makeParticle() {
+    return {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.45,
+      vy: (Math.random() - 0.5) * 0.45,
+      r: Math.random() * 1.4 + 0.5,
+    };
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < particles.length; i++) {
+      const a = particles[i];
+
+      for (let j = i + 1; j < particles.length; j++) {
+        const b = particles[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+
+        if (d < CONNECT) {
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = `rgb(23 25 29 / ${0.22 * (1 - d / CONNECT)})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+
+    particles.forEach((p) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgb(23 25 29 / 0.38)';
+      ctx.fill();
+
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+    });
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  function init() {
+    resize();
+    particles = Array.from({ length: COUNT }, makeParticle);
+    cancelAnimationFrame(raf);
+    draw();
+  }
+
+  window.addEventListener('resize', () => {
+    resize();
+    particles = Array.from({ length: COUNT }, makeParticle);
+  }, { passive: true });
+
+  // Start when visible
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        init();
+      } else {
+        cancelAnimationFrame(raf);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  obs.observe(canvas.closest('.status-cta'));
+}());
