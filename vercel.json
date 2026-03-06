@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "python3 tools/build.py && rm -rf dist && mkdir -p dist && cp index.html dist/index.html && cp -R styles dist/styles && cp -R scripts dist/scripts",
+  "buildCommand": "python3 tools/build.py && rm -rf dist && mkdir -p dist && cp index.html dist/index.html && cp -R styles dist/styles && cp -R scripts dist/scripts && cp -R img dist/img",
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false
