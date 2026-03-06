@@ -1,5 +1,11 @@
 'use strict';
 
+/* ── FORCE TOP ON LOAD ── */
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo({ top: 0, behavior: 'instant' });
+
 /* ── SCROLL PROGRESS BAR ── */
 const progressBar = document.createElement('div');
 
