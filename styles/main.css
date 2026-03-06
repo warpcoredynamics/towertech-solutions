@@ -278,7 +278,7 @@ section { border-bottom: 1px solid var(--line); }
   width: 100%;
   background:
     linear-gradient(to top, rgb(0 0 0 / 0.38), transparent 58%),
-    url('../img/img1.jpg') center 40% / cover;
+    url('/img/img1.jpg') center 40% / cover;
   animation: image-drift 16s ease-in-out infinite alternate;
   border-bottom: 1px solid var(--line);
 }
@@ -491,7 +491,7 @@ section { border-bottom: 1px solid var(--line); }
   grid-template-columns: repeat(4, minmax(0, 1fr));
   background:
     linear-gradient(rgb(0 0 0 / 0.72), rgb(0 0 0 / 0.78)),
-    url('../img/img3.jpg') center 30% / cover fixed;
+    url('/img/img3.jpg') center 30% / cover fixed;
   color: #d6d9de;
 }
 
@@ -531,7 +531,7 @@ section { border-bottom: 1px solid var(--line); }
   border-right: 1px solid var(--line);
   background:
     linear-gradient(to top, rgb(0 0 0 / 0.48), transparent 50%),
-    url('../img/img2.jpg') center / cover;
+    url('/img/img2.jpg') center / cover;
   animation: image-drift 15s ease-in-out infinite alternate;
   transition: filter .4s ease;
 }
