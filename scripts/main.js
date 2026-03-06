@@ -41,18 +41,108 @@ const revealObs = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach((el) => revealObs.observe(el));
 
-/* ── STATUS LIST STAGGER ── */
-const listObs = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    [...entry.target.querySelectorAll('li')].forEach((li, i) => {
-      setTimeout(() => li.classList.add('show'), i * 85);
-    });
-    listObs.unobserve(entry.target);
-  });
-}, { threshold: 0.18 });
+/* ── TERMINAL TYPEWRITER ── */
+(function initTerminal() {
+  const output = document.getElementById('terminal-output');
 
-document.querySelectorAll('.status-left ul').forEach((ul) => listObs.observe(ul));
+  if (!output) return;
+
+  const services = [
+    { n: '01', text: 'Antenna and Line Installation Services' },
+    { n: '02', text: 'Civil and Electrical Services' },
+    { n: '03', text: 'Emergency Deployment Services' },
+    { n: '04', text: 'Structural Assessment and Modification' },
+    { n: '05', text: 'Microwave Services' },
+    { n: '06', text: 'Testing and Integration' },
+    { n: '07', text: 'Maintenance and Repair Services' },
+  ];
+
+  const cursor = document.createElement('span');
+
+  cursor.className = 'terminal-cursor';
+
+  function typeCommand(cmd, el, speed, done) {
+    let i = 0;
+
+    el.textContent = '';
+    el.appendChild(cursor);
+
+    const t = setInterval(() => {
+      el.textContent = cmd.slice(0, ++i);
+      el.appendChild(cursor);
+      if (i >= cmd.length) { clearInterval(t); if (done) setTimeout(done, 120); }
+    }, speed);
+  }
+
+  function typeLine(text, el, speed, done) {
+    let i = 0;
+
+    el.textContent = '';
+
+    const t = setInterval(() => {
+      el.textContent = text.slice(0, ++i);
+      if (i >= text.length) { clearInterval(t); if (done) done(); }
+    }, speed);
+  }
+
+  function printService(idx) {
+    if (idx >= services.length) {
+      const doneLine = document.createElement('span');
+
+      doneLine.className = 'terminal-line';
+      doneLine.innerHTML = '<span class="terminal-prompt">$</span> <span class="terminal-cmd">_</span>';
+      doneLine.querySelector('.terminal-cmd').appendChild(cursor);
+      output.appendChild(doneLine);
+      return;
+    }
+
+    // prompt + command line
+    const cmdLine = document.createElement('span');
+
+    cmdLine.className = 'terminal-line';
+    const prompt = document.createElement('span');
+
+    prompt.className = 'terminal-prompt';
+    prompt.textContent = '$ ';
+    const cmdSpan = document.createElement('span');
+
+    cmdSpan.className = 'terminal-cmd';
+    cmdLine.appendChild(prompt);
+    cmdLine.appendChild(cmdSpan);
+    output.appendChild(cmdLine);
+
+    const cmd = `echo "${services[idx].n}. ${services[idx].text}"`;
+
+    typeCommand(cmd, cmdSpan, 28, () => {
+      cursor.remove();
+
+      // output line
+      const outLine = document.createElement('span');
+
+      outLine.className = 'terminal-line';
+      const outSpan = document.createElement('span');
+
+      outSpan.className = 'terminal-output';
+      outLine.appendChild(outSpan);
+      output.appendChild(outLine);
+
+      typeLine(`${services[idx].n}. ${services[idx].text}`, outSpan, 14, () => {
+        setTimeout(() => printService(idx + 1), 180);
+      });
+    });
+  }
+
+  // Trigger when section scrolls into view
+  const termObs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      setTimeout(() => printService(0), 400);
+      termObs.unobserve(entry.target);
+    });
+  }, { threshold: 0.2 });
+
+  termObs.observe(output.closest('section'));
+}());
 
 /* ── CAP CARD STAGGER ── */
 const capObs = new IntersectionObserver((entries) => {
@@ -92,45 +182,6 @@ const newsObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 
 document.querySelectorAll('.news-stack').forEach((s) => newsObs.observe(s));
-
-/* ── MATRIX TYPEWRITER ── */
-const matrix = document.querySelector('.matrix');
-
-if (matrix) {
-  const blocks = [
-    'INSTALL  COMMISSION  VERIFY\nPOWER  CIVIL  STRUCTURAL\nMICROWAVE  INTEGRATION  RF\nMAINTENANCE  REPAIR  RESPONSE\nSAFETY  QUALITY  COMPLIANCE\nNATIONWIDE  FIELD  DELIVERY',
-    'PRECISION  PROTOCOL  PERFORMANCE\nFIELD  CONTROL  QUALITY\nTEST  VERIFY  CLOSEOUT\nTOWER  ROOFTOP  SMALL-CELL\nCARRIER  PRIME  SUBCONTRACT\nON-TIME  ON-BUDGET  PROVEN',
-  ];
-
-  let blockIdx = 0;
-  let charIdx = 0;
-  let isDeleting = false;
-
-  function tick() {
-    const current = blocks[blockIdx % blocks.length];
-
-    if (!isDeleting) {
-      charIdx++;
-      if (charIdx >= current.length) {
-        isDeleting = true;
-        setTimeout(tick, 2600);
-        return;
-      }
-    } else {
-      charIdx -= 2;
-      if (charIdx <= 0) {
-        isDeleting = false;
-        blockIdx++;
-        charIdx = 0;
-      }
-    }
-
-    matrix.textContent = current.slice(0, Math.max(0, charIdx));
-    setTimeout(tick, isDeleting ? 16 : 36);
-  }
-
-  setTimeout(tick, 2800);
-}
 
 /* ── MAGNETIC BUTTONS ── */
 document.querySelectorAll('.menu-pill, .pill').forEach((el) => {
