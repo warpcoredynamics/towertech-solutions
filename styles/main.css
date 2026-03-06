@@ -10,7 +10,7 @@
   --accent:      #ff4d2e;
   --accent-2:    #ff3a28;
   --white:       #f5f5f5;
-  --mono-font:   'Share Tech Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --mono-font:   'Share Tech Mono', ui-monospace, sfmono-regular, menlo, monaco, consolas, monospace;
 }
 
 * {
@@ -165,6 +165,15 @@ body::after {
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
+}
+
+.status-cta a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: clamp(1.4rem, 2.5vw, 2.9rem);
+  line-height: .95;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .top-nav a {
@@ -353,15 +362,6 @@ section { border-bottom: 1px solid var(--line); }
 }
 
 .status-cta:hover .arrow { transform: translate(8px, -8px); }
-
-.status-cta a {
-  color: var(--ink);
-  text-decoration: none;
-  font-size: clamp(1.4rem, 2.5vw, 2.9rem);
-  line-height: .95;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
 
 /* ── INTRO ── */
 .intro {
