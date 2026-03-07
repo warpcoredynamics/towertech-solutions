@@ -296,6 +296,63 @@ document.querySelectorAll('.news-item').forEach((item) => {
   });
 });
 
+/* ── CUSTOM CURSOR ── */
+(function initCursor() {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const dot = document.createElement('div');
+  dot.className = 'cursor-dot';
+  const ring = document.createElement('div');
+  ring.className = 'cursor-ring';
+  document.body.append(dot, ring);
+
+  let mx = -100, my = -100;
+  let rx = -100, ry = -100;
+
+  document.addEventListener('mousemove', (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+  }, { passive: true });
+
+  (function tick() {
+    rx += (mx - rx) * 0.14;
+    ry += (my - ry) * 0.14;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(tick);
+  }());
+
+  const selector = 'a, button, [role="button"], .pill, .menu-pill, .nav-circles i, .cap-card';
+  document.querySelectorAll(selector).forEach((el) => {
+    el.addEventListener('mouseenter', () => { dot.classList.add('hovering'); ring.classList.add('hovering'); });
+    el.addEventListener('mouseleave', () => { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
+  });
+}());
+
+/* ── ACTIVE NAV SECTION ── */
+(function initActiveNav() {
+  const navLinks = document.querySelectorAll('.top-nav a[href^="#"]');
+  if (!navLinks.length) return;
+
+  const sections = [...navLinks]
+    .map((a) => document.getElementById(a.getAttribute('href').slice(1)))
+    .filter(Boolean);
+
+  const activate = (id) => {
+    navLinks.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+  };
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) activate(entry.target.id);
+    });
+  }, { threshold: 0, rootMargin: '-20% 0px -65% 0px' });
+
+  sections.forEach((s) => obs.observe(s));
+}());
+
 /* ── CTA PARTICLE NETWORK ── */
 (function initCtaParticles() {
   const canvas = document.querySelector('.cta-canvas');

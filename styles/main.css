@@ -821,6 +821,16 @@ section { border-bottom: 1px solid var(--line); }
 
 .proof-item:hover { background: #252830; border-left-color: var(--accent); }
 
+.proof-item strong {
+  display: inline-block;
+  transition: transform .22s cubic-bezier(.2, .65, .2, 1), color .22s ease;
+}
+
+.proof-item:hover strong {
+  transform: translateX(4px);
+  color: var(--white);
+}
+
 /* ── NEWS ITEM SHOW STATE ── */
 .news-item.show {
   opacity: 1;
@@ -1004,4 +1014,61 @@ section { border-bottom: 1px solid var(--line); }
 @keyframes radar-ping {
   0% { transform: scale(1); opacity: 0.9; }
   100% { transform: scale(13); opacity: 0; }
+}
+
+/* ── CUSTOM CURSOR ── */
+@media (hover: hover) and (pointer: fine) {
+  html { cursor: none; }
+
+  .cursor-dot {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: var(--ink);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width .15s ease, height .15s ease, background .15s ease, opacity .2s ease;
+    will-change: left, top;
+  }
+
+  .cursor-ring {
+    position: fixed;
+    width: 28px;
+    height: 28px;
+    border: 1.5px solid rgb(23 25 29 / 0.45);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width .22s ease, height .22s ease, border-color .22s ease, border-width .22s ease;
+    will-change: left, top;
+  }
+
+  .cursor-dot.hovering {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+  }
+
+  .cursor-ring.hovering {
+    width: 52px;
+    height: 52px;
+    border-color: var(--accent);
+    border-width: 1px;
+  }
+
+  a, button, [role="button"], .pill, .menu-pill, .nav-circles i, .cap-card {
+    cursor: none;
+  }
+}
+
+/* ── ACTIVE NAV LINK ── */
+.top-nav a.active {
+  color: var(--ink);
+}
+
+.top-nav a.active::after {
+  transform: scaleX(1);
 }
