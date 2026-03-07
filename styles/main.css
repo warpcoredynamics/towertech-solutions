@@ -22,6 +22,7 @@
 html,
 body {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -491,7 +492,7 @@ section { border-bottom: 1px solid var(--line); }
   grid-template-columns: repeat(4, minmax(0, 1fr));
   background:
     linear-gradient(rgb(0 0 0 / 0.72), rgb(0 0 0 / 0.78)),
-    url('/img/img3.jpg') center 30% / cover fixed;
+    url('/img/img3.jpg') center 30% / cover;
   color: #d6d9de;
 }
 
@@ -874,7 +875,8 @@ section { border-bottom: 1px solid var(--line); }
   font-size: clamp(.88rem, 1.4vw, 1.1rem);
   line-height: 1.9;
   color: #b6bac2;
-  white-space: pre;
+  white-space: pre-wrap;
+  word-break: break-word;
   min-height: 14em;
   padding: 18px 4px 4px;
 }
