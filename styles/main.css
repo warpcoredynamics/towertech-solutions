@@ -1076,46 +1076,58 @@ section { border-bottom: 1px solid var(--line); }
 }
 
 /* ── CUSTOM CURSOR ── */
+@keyframes cursor-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 @media (hover: hover) and (pointer: fine) {
   html { cursor: none; }
 
   .cursor-dot {
     position: fixed;
-    width: 6px;
-    height: 6px;
-    background: var(--ink);
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
-    transition: width .15s ease, height .15s ease, background .15s ease, opacity .2s ease;
+    box-shadow: 0 0 0 2px rgb(255 77 46 / 0.18), 0 0 10px rgb(255 77 46 / 0.4);
+    transition: width .18s ease, height .18s ease, box-shadow .22s ease;
     will-change: left, top;
   }
 
   .cursor-ring {
     position: fixed;
-    width: 28px;
-    height: 28px;
-    border: 1.5px solid rgb(23 25 29 / 0.45);
+    width: 30px;
+    height: 30px;
+    border: 1.5px dashed rgb(255 77 46 / 0.55);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: width .22s ease, height .22s ease, border-color .22s ease, border-width .22s ease;
+    animation: cursor-spin 3.5s linear infinite;
+    transition: width .25s cubic-bezier(.2,.65,.2,1),
+                height .25s cubic-bezier(.2,.65,.2,1),
+                border-color .2s ease,
+                border-style .2s ease,
+                border-width .2s ease;
     will-change: left, top;
   }
 
   .cursor-dot.hovering {
-    width: 8px;
-    height: 8px;
-    background: var(--accent);
+    width: 10px;
+    height: 10px;
+    box-shadow: 0 0 0 3px rgb(255 77 46 / 0.22), 0 0 18px rgb(255 77 46 / 0.6);
   }
 
   .cursor-ring.hovering {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
+    border-style: solid;
+    border-width: 1.5px;
     border-color: var(--accent);
-    border-width: 1px;
+    animation-play-state: paused;
   }
 
   a, button, [role="button"], .pill, .menu-pill, .nav-circles i, .cap-card {
