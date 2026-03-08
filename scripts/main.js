@@ -236,21 +236,63 @@ document.querySelectorAll('.nav-circles i').forEach((el) => {
   });
 });
 
-/* ── HERO IMAGE PARALLAX ── */
-const heroImage = document.querySelector('.hero-image');
+/* ── IMAGE PARALLAX ── */
+(function initImageParallax() {
+  const heroImage  = document.querySelector('.hero-image');
+  const proofGrid  = document.querySelector('.proof-grid');
+  const newsImage  = document.querySelector('.news-image');
+  const hasMouse   = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-if (heroImage) {
-  window.addEventListener('scroll', () => {
-    const rect = heroImage.getBoundingClientRect();
-    const visible = rect.top < window.innerHeight && rect.bottom > 0;
+  /* scroll offsets (updated on scroll) */
+  let heroScroll = 0, proofScroll = 0, newsScroll = 0;
 
-    if (visible) {
-      const offset = (window.innerHeight - rect.top) * 0.08;
-
-      heroImage.style.backgroundPositionY = `calc(50% + ${offset}px)`;
+  function onScroll() {
+    if (heroImage) {
+      const r = heroImage.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        heroScroll = (window.innerHeight - r.top) * 0.08;
+        if (!hasMouse) heroImage.style.backgroundPositionY = `calc(40% + ${heroScroll}px)`;
+      }
     }
-  }, { passive: true });
-}
+    if (proofGrid) {
+      const r = proofGrid.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        const p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+        proofScroll = (p - 0.5) * 70;
+        proofGrid.style.backgroundPositionY = `calc(30% + ${proofScroll}px)`;
+      }
+    }
+    if (newsImage) {
+      const r = newsImage.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        const p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
+        newsScroll = (p - 0.5) * 90;
+        newsImage.style.setProperty('--img-py', `calc(50% + ${newsScroll}px)`);
+      }
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* mouse parallax on hero (desktop only) — lerp loop */
+  if (hasMouse && heroImage) {
+    let tx = 0, ty = 0, lx = 0, ly = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      tx = (e.clientX / window.innerWidth  - 0.5) * -24;
+      ty = (e.clientY / window.innerHeight - 0.5) * -14;
+    }, { passive: true });
+
+    (function tick() {
+      lx += (tx - lx) * 0.055;
+      ly += (ty - ly) * 0.055;
+      heroImage.style.backgroundPosition =
+        `calc(50% + ${lx}px) calc(40% + ${heroScroll + ly}px)`;
+      requestAnimationFrame(tick);
+    }());
+  }
+}());
 
 /* ── TOPBAR BRAND LETTER SPLIT ── */
 const brand = document.querySelector('.brand');

@@ -282,6 +282,7 @@ section { border-bottom: 1px solid var(--line); }
     url('/img/img1.jpg') center 40% / cover;
   animation: image-drift 16s ease-in-out infinite alternate;
   border-bottom: 1px solid var(--line);
+  will-change: background-position;
 }
 
 /* ── STATUS ── */
@@ -494,6 +495,7 @@ section { border-bottom: 1px solid var(--line); }
     linear-gradient(rgb(0 0 0 / 0.72), rgb(0 0 0 / 0.78)),
     url('/img/img3.jpg') center 30% / cover;
   color: #d6d9de;
+  will-change: background-position;
 }
 
 .proof-item {
@@ -530,14 +532,26 @@ section { border-bottom: 1px solid var(--line); }
 .news-image {
   min-height: 700px;
   border-right: 1px solid var(--line);
-  background:
-    linear-gradient(to top, rgb(0 0 0 / 0.48), transparent 50%),
-    url('/img/img2.jpg') center / cover;
-  animation: image-drift 15s ease-in-out infinite alternate;
-  transition: filter .4s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.news-image:hover { filter: brightness(1.08) contrast(1.04); }
+.news-image::before {
+  content: '';
+  position: absolute;
+  inset: -6%;
+  background:
+    linear-gradient(to top, rgb(0 0 0 / 0.48), transparent 50%),
+    url('/img/img2.jpg') center var(--img-py, 50%) / cover;
+  animation: image-drift 15s ease-in-out infinite alternate;
+  transition: transform .8s cubic-bezier(.2, .65, .2, 1), filter .4s ease;
+  will-change: transform, background-position;
+}
+
+.news-image:hover::before {
+  transform: scale(1.055);
+  filter: brightness(1.07) contrast(1.03);
+}
 
 .news-stack {
   display: grid;
