@@ -6,6 +6,7 @@ partials = {
     'header': 'header.html',
     'hero': 'hero.html',
     'status': 'status.html',
+    'ticker': 'ticker.html',
     'intro': 'intro.html',
     'capabilities': 'capabilities.html',
     'proof': 'proof.html',

@@ -190,19 +190,36 @@ const newsObs = new IntersectionObserver((entries) => {
 document.querySelectorAll('.news-stack').forEach((s) => newsObs.observe(s));
 
 /* ── MAGNETIC BUTTONS ── */
-document.querySelectorAll('.menu-pill, .pill').forEach((el) => {
-  el.addEventListener('mousemove', (e) => {
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left - r.width / 2) * 0.22;
-    const y = (e.clientY - r.top - r.height / 2) * 0.22;
+(function initMagnetic() {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-    el.style.transform = `translate(${x}px, ${y}px)`;
-  });
+  const RADIUS = 90;   /* attraction starts this far from button edge */
+  const STRENGTH = 0.38;
 
-  el.addEventListener('mouseleave', () => {
-    el.style.transform = '';
+  document.querySelectorAll('.menu-pill, .pill').forEach((el) => {
+    el.style.transition = 'transform .35s cubic-bezier(.2,.65,.2,1), background .2s ease, color .2s ease, box-shadow .2s ease';
+
+    function onMove(e) {
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const threshold = Math.max(r.width, r.height) / 2 + RADIUS;
+
+      if (dist < threshold) {
+        const pull = (1 - dist / threshold) * STRENGTH;
+        el.style.transform = `translate(${dx * pull}px, ${dy * pull}px)`;
+      } else {
+        el.style.transform = '';
+      }
+    }
+
+    document.addEventListener('mousemove', onMove, { passive: true });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
   });
-});
+}());
 
 /* ── MAGNETIC NAV CIRCLES ── */
 document.querySelectorAll('.nav-circles i').forEach((el) => {
@@ -351,6 +368,60 @@ document.querySelectorAll('.news-item').forEach((item) => {
   }, { threshold: 0, rootMargin: '-20% 0px -65% 0px' });
 
   sections.forEach((s) => obs.observe(s));
+}());
+
+/* ── TEXT SCRAMBLE ── */
+(function initTextScramble() {
+  const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%@·_-><';
+  const FRAMES = 28;
+
+  function scramble(el, delay) {
+    setTimeout(() => {
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+      const nodes = [];
+      let node;
+      while ((node = walker.nextNode())) nodes.push({ node, orig: node.nodeValue });
+
+      const totalLen = nodes.reduce((n, t) => n + t.orig.replace(/\s/g, '').length, 0);
+      if (!totalLen) return;
+
+      let frame = 0;
+      (function tick() {
+        let gi = 0;
+        nodes.forEach(({ node, orig }) => {
+          let out = '';
+          for (let i = 0; i < orig.length; i++) {
+            const c = orig[i];
+            if (/\s/.test(c)) { out += c; continue; }
+            const threshold = (gi / totalLen) * FRAMES;
+            out += frame >= threshold ? c : CHARS[Math.floor(Math.random() * CHARS.length)];
+            gi++;
+          }
+          node.nodeValue = out;
+        });
+        frame++;
+        if (frame <= FRAMES) requestAnimationFrame(tick);
+        else nodes.forEach(({ node, orig }) => (node.nodeValue = orig));
+      }());
+    }, delay || 0);
+  }
+
+  /* Hero h1: fire on load after reveal animation */
+  const heroH1 = document.querySelector('.hero h1');
+  if (heroH1) scramble(heroH1, 920);
+
+  /* Section headings: fire when they enter viewport */
+  const headings = document.querySelectorAll('.cap-grid h3, .intro h2');
+  if (headings.length) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        obs.unobserve(entry.target);
+        scramble(entry.target, 180);
+      });
+    }, { threshold: 0.6 });
+    headings.forEach((h) => obs.observe(h));
+  }
 }());
 
 /* ── CTA PARTICLE NETWORK ── */

@@ -848,6 +848,51 @@ section { border-bottom: 1px solid var(--line); }
 .footer.show p { animation: reveal-up .7s .22s cubic-bezier(.2, .65, .2, 1) both; }
 
 
+/* ── TICKER ── */
+.ticker {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  padding: 13px 0;
+  user-select: none;
+}
+
+.ticker-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: ticker-scroll 32s linear infinite;
+}
+
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+.ticker-item {
+  font-size: .68rem;
+  letter-spacing: .12em;
+  color: var(--muted);
+  padding: 0 1.4rem;
+  white-space: nowrap;
+  transition: color .2s ease;
+}
+
+.ticker-item:hover {
+  color: var(--ink);
+}
+
+.ticker-sep {
+  color: var(--accent);
+  font-size: .6rem;
+  flex-shrink: 0;
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 /* ── TERMINAL BLOCK ── */
 .terminal-header {
   display: flex;
