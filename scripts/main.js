@@ -243,55 +243,74 @@ document.querySelectorAll('.nav-circles i').forEach((el) => {
   const newsImage  = document.querySelector('.news-image');
   const hasMouse   = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  /* scroll offsets (updated on scroll) */
-  let heroScroll = 0, proofScroll = 0, newsScroll = 0;
+  /* scroll targets & lerped current values */
+  let heroScrollT = 0,  heroScrollC = 0;
+  let proofScrollT = 0, proofScrollC = 0;
+  let newsScrollT = 0,  newsScrollC = 0;
 
-  function onScroll() {
+  /* mouse parallax targets (desktop only) */
+  let mouseTX = 0, mouseTY = 0, mouseCX = 0, mouseCY = 0;
+
+  function computeScrollTargets() {
     if (heroImage) {
       const r = heroImage.getBoundingClientRect();
       if (r.top < window.innerHeight && r.bottom > 0) {
-        heroScroll = (window.innerHeight - r.top) * 0.08;
-        if (!hasMouse) heroImage.style.backgroundPositionY = `calc(40% + ${heroScroll}px)`;
+        heroScrollT = (window.innerHeight - r.top) * 0.08;
       }
     }
     if (proofGrid) {
       const r = proofGrid.getBoundingClientRect();
       if (r.top < window.innerHeight && r.bottom > 0) {
         const p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
-        proofScroll = (p - 0.5) * 70;
-        proofGrid.style.backgroundPositionY = `calc(30% + ${proofScroll}px)`;
+        proofScrollT = (p - 0.5) * 70;
       }
     }
     if (newsImage) {
       const r = newsImage.getBoundingClientRect();
       if (r.top < window.innerHeight && r.bottom > 0) {
         const p = (window.innerHeight - r.top) / (window.innerHeight + r.height);
-        newsScroll = (p - 0.5) * 90;
-        newsImage.style.setProperty('--img-py', `calc(50% + ${newsScroll}px)`);
+        newsScrollT = (p - 0.5) * 90;
       }
     }
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  window.addEventListener('scroll', computeScrollTargets, { passive: true });
+  computeScrollTargets();
 
-  /* mouse parallax on hero (desktop only) — lerp loop */
-  if (hasMouse && heroImage) {
-    let tx = 0, ty = 0, lx = 0, ly = 0;
-
+  if (hasMouse) {
     document.addEventListener('mousemove', (e) => {
-      tx = (e.clientX / window.innerWidth  - 0.5) * -24;
-      ty = (e.clientY / window.innerHeight - 0.5) * -14;
+      mouseTX = (e.clientX / window.innerWidth  - 0.5) * -24;
+      mouseTY = (e.clientY / window.innerHeight - 0.5) * -14;
     }, { passive: true });
-
-    (function tick() {
-      lx += (tx - lx) * 0.055;
-      ly += (ty - ly) * 0.055;
-      heroImage.style.backgroundPosition =
-        `calc(50% + ${lx}px) calc(40% + ${heroScroll + ly}px)`;
-      requestAnimationFrame(tick);
-    }());
   }
+
+  /* single rAF loop — lerp all values then apply */
+  const LERP = 0.072;
+
+  (function tick() {
+    heroScrollC  += (heroScrollT  - heroScrollC)  * LERP;
+    proofScrollC += (proofScrollT - proofScrollC) * LERP;
+    newsScrollC  += (newsScrollT  - newsScrollC)  * LERP;
+    mouseCX      += (mouseTX      - mouseCX)      * LERP;
+    mouseCY      += (mouseTY      - mouseCY)      * LERP;
+
+    if (heroImage) {
+      if (hasMouse) {
+        heroImage.style.backgroundPosition =
+          `calc(50% + ${mouseCX.toFixed(2)}px) calc(40% + ${(heroScrollC + mouseCY).toFixed(2)}px)`;
+      } else {
+        heroImage.style.backgroundPositionY = `calc(40% + ${heroScrollC.toFixed(2)}px)`;
+      }
+    }
+    if (proofGrid) {
+      proofGrid.style.backgroundPositionY = `calc(30% + ${proofScrollC.toFixed(2)}px)`;
+    }
+    if (newsImage) {
+      newsImage.style.setProperty('--img-py', `calc(50% + ${newsScrollC.toFixed(2)}px)`);
+    }
+
+    requestAnimationFrame(tick);
+  }());
 }());
 
 /* ── TOPBAR BRAND LETTER SPLIT ── */
@@ -343,17 +362,7 @@ document.querySelectorAll('.cap-card').forEach((card) => {
 });
 
 /* ── NEWS ITEM CURSOR ACCENT LINE ── */
-document.querySelectorAll('.news-item').forEach((item) => {
-  item.addEventListener('mouseenter', () => {
-    item.style.borderLeft = '3px solid var(--accent)';
-    item.style.paddingLeft = `calc(${getComputedStyle(item).paddingLeft} - 3px)`;
-  });
-
-  item.addEventListener('mouseleave', () => {
-    item.style.borderLeft = '';
-    item.style.paddingLeft = '';
-  });
-});
+/* handled via CSS border-left-color transition on hover */
 
 /* ── CUSTOM CURSOR ── */
 (function initCursor() {

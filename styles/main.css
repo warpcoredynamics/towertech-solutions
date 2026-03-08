@@ -71,7 +71,7 @@ body::after {
 }
 
 @keyframes reveal-up {
-  from { opacity: 0; transform: translateY(28px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -117,7 +117,7 @@ body::after {
   border-bottom: 1px solid var(--line);
   background: rgb(212 213 215 / 0.92);
   backdrop-filter: blur(14px);
-  transition: background .3s ease, border-color .3s ease;
+  transition: background .4s cubic-bezier(.25,.46,.45,.94), border-color .4s cubic-bezier(.25,.46,.45,.94);
   animation: slide-down .55s .05s cubic-bezier(.2, .65, .2, 1) both;
 }
 
@@ -130,7 +130,7 @@ body::after {
   font-size: clamp(1.3rem, 2vw, 1.85rem);
   font-weight: 700;
   letter-spacing: -0.02em;
-  transition: transform .2s ease;
+  transition: transform .3s cubic-bezier(.25,.46,.45,.94);
 }
 
 .brand:hover { transform: translateY(-2px); }
@@ -189,7 +189,7 @@ body::after {
   color: var(--muted);
   font-size: .85rem;
   font-weight: 500;
-  transition: color .15s ease;
+  transition: color .25s cubic-bezier(.25,.46,.45,.94);
   white-space: nowrap;
   position: relative;
 }
@@ -209,7 +209,7 @@ body::after {
   font-size: .82rem;
   font-weight: 700;
   letter-spacing: .07em;
-  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+  transition: transform .3s cubic-bezier(.25,.46,.45,.94), background .3s cubic-bezier(.25,.46,.45,.94), box-shadow .3s cubic-bezier(.25,.46,.45,.94);
   position: relative;
   overflow: hidden;
 }
@@ -338,7 +338,7 @@ section { border-bottom: 1px solid var(--line); }
   align-self: flex-end;
   font-size: clamp(3.2rem, 7vw, 6.2rem);
   line-height: 1;
-  transition: transform .25s ease;
+  transition: transform .3s cubic-bezier(.25,.46,.45,.94);
   color: var(--ink);
   position: relative;
   z-index: 2;
@@ -377,7 +377,7 @@ section { border-bottom: 1px solid var(--line); }
   background: var(--ink);
   color: var(--paper);
   cursor: pointer;
-  transition: transform .2s ease;
+  transition: transform .3s cubic-bezier(.25,.46,.45,.94);
 }
 
 .nav-circles i:hover { transform: translateY(-3px); }
@@ -396,10 +396,11 @@ section { border-bottom: 1px solid var(--line); }
   padding: clamp(22px, 3.2vw, 40px) 26px 28px;
   border-right: 1px solid var(--line);
   background: var(--paper-lt);
-  transition: opacity .7s cubic-bezier(.2, .65, .2, 1), transform .7s cubic-bezier(.2, .65, .2, 1), background .25s ease;
+  transition: opacity .75s cubic-bezier(.2, .65, .2, 1), transform .75s cubic-bezier(.2, .65, .2, 1), background .3s cubic-bezier(.25,.46,.45,.94);
   min-width: 0;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(24px);
+  will-change: transform, opacity;
 }
 
 .cap-card:last-child { border-right: 0; }
@@ -476,7 +477,7 @@ section { border-bottom: 1px solid var(--line); }
   font-size: .82rem;
   font-weight: 600;
   letter-spacing: .08em;
-  transition: background .22s ease, color .22s ease, transform .22s ease;
+  transition: background .3s cubic-bezier(.25,.46,.45,.94), color .3s cubic-bezier(.25,.46,.45,.94), transform .3s cubic-bezier(.25,.46,.45,.94);
   position: relative;
   overflow: hidden;
 }
@@ -509,8 +510,9 @@ section { border-bottom: 1px solid var(--line); }
   gap: 8px;
   min-width: 0;
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity .55s ease, transform .55s cubic-bezier(.2, .65, .2, 1), background .2s ease, border-color .2s ease;
+  transform: translateY(14px);
+  transition: opacity .65s cubic-bezier(.25,.46,.45,.94), transform .65s cubic-bezier(.2, .65, .2, 1), background .28s cubic-bezier(.25,.46,.45,.94), border-color .28s cubic-bezier(.25,.46,.45,.94);
+  will-change: transform, opacity;
 }
 
 .proof-item:last-child { border-right: 0; }
@@ -544,7 +546,7 @@ section { border-bottom: 1px solid var(--line); }
     linear-gradient(to top, rgb(0 0 0 / 0.48), transparent 50%),
     url('/img/img2.jpg') center var(--img-py, 50%) / cover;
   animation: image-drift 15s ease-in-out infinite alternate;
-  transition: transform .8s cubic-bezier(.2, .65, .2, 1), filter .4s ease;
+  transition: transform .9s cubic-bezier(.2, .65, .2, 1), filter .5s cubic-bezier(.25,.46,.45,.94);
   will-change: transform, background-position;
 }
 
@@ -562,19 +564,26 @@ section { border-bottom: 1px solid var(--line); }
 .news-item {
   padding: clamp(22px, 3vw, 34px) clamp(18px, 2.6vw, 28px);
   border-bottom: 1px solid var(--line);
+  border-left: 3px solid transparent;
   display: grid;
   align-content: center;
   gap: 12px;
-  transition: opacity .6s ease, transform .6s cubic-bezier(.2, .65, .2, 1), background .22s ease;
+  transition: opacity .7s cubic-bezier(.25,.46,.45,.94), transform .7s cubic-bezier(.2, .65, .2, 1), background .28s cubic-bezier(.25,.46,.45,.94), border-left-color .28s cubic-bezier(.25,.46,.45,.94);
   min-width: 0;
   opacity: 0;
-  transform: translateX(24px);
+  transform: translateX(18px);
+  will-change: transform, opacity;
 }
 
 .news-item:last-child { border-bottom: 0; }
 
 .news-item:hover {
   background: #dcdde0;
+  transform: translateX(4px);
+  border-left-color: var(--accent);
+}
+
+.news-item.show:hover {
   transform: translateX(4px);
 }
 
@@ -622,8 +631,8 @@ section { border-bottom: 1px solid var(--line); }
 /* ── REVEAL ── */
 .reveal {
   opacity: 0;
-  transform: translateY(26px);
-  transition: opacity .85s ease, transform .85s cubic-bezier(.2,.65,.2,1);
+  transform: translateY(18px);
+  transition: opacity .9s cubic-bezier(.25,.46,.45,.94), transform .9s cubic-bezier(.2,.65,.2,1);
 }
 
 .reveal.show {
@@ -711,7 +720,7 @@ section { border-bottom: 1px solid var(--line); }
 
 @keyframes float-y {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
+  50% { transform: translateY(-5px); }
 }
 
 @keyframes shimmer-sweep {
@@ -745,7 +754,7 @@ section { border-bottom: 1px solid var(--line); }
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform .22s cubic-bezier(.2, .65, .2, 1);
+  transition: transform .35s cubic-bezier(.2, .65, .2, 1);
 }
 
 .top-nav a:hover::after { transform: scaleX(1); }
@@ -798,7 +807,7 @@ section { border-bottom: 1px solid var(--line); }
   background: var(--accent-2);
   transform: scaleY(0);
   transform-origin: bottom;
-  transition: transform .4s cubic-bezier(.2, .65, .2, 1);
+  transition: transform .5s cubic-bezier(.16,.67,.34,.99);
   z-index: 1;
 }
 
@@ -837,7 +846,7 @@ section { border-bottom: 1px solid var(--line); }
 
 .proof-item strong {
   display: inline-block;
-  transition: transform .22s cubic-bezier(.2, .65, .2, 1), color .22s ease;
+  transition: transform .3s cubic-bezier(.2, .65, .2, 1), color .3s cubic-bezier(.25,.46,.45,.94);
 }
 
 .proof-item:hover strong {
@@ -889,7 +898,7 @@ section { border-bottom: 1px solid var(--line); }
   color: var(--muted);
   padding: 0 1.4rem;
   white-space: nowrap;
-  transition: color .2s ease;
+  transition: color .3s cubic-bezier(.25,.46,.45,.94);
 }
 
 .ticker-item:hover {
@@ -1006,7 +1015,7 @@ section { border-bottom: 1px solid var(--line); }
 
 @keyframes orb-pulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.35); }
+  50% { transform: scale(1.12); }
 }
 
 /* ── SAFETY & COMPLIANCE — CIRCULAR ── */
@@ -1094,7 +1103,7 @@ section { border-bottom: 1px solid var(--line); }
     z-index: 9999;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 0 2px rgb(255 77 46 / 0.18), 0 0 10px rgb(255 77 46 / 0.4);
-    transition: width .18s ease, height .18s ease, box-shadow .22s ease;
+    transition: width .28s cubic-bezier(.25,.46,.45,.94), height .28s cubic-bezier(.25,.46,.45,.94), box-shadow .32s cubic-bezier(.25,.46,.45,.94);
     will-change: left, top;
   }
 
@@ -1107,11 +1116,11 @@ section { border-bottom: 1px solid var(--line); }
     pointer-events: none;
     z-index: 9998;
     animation: cursor-spin 3.5s linear infinite;
-    transition: width .25s cubic-bezier(.2,.65,.2,1),
-                height .25s cubic-bezier(.2,.65,.2,1),
-                border-color .2s ease,
-                border-style .2s ease,
-                border-width .2s ease;
+    transition: width .32s cubic-bezier(.2,.65,.2,1),
+                height .32s cubic-bezier(.2,.65,.2,1),
+                border-color .28s cubic-bezier(.25,.46,.45,.94),
+                border-style .28s cubic-bezier(.25,.46,.45,.94),
+                border-width .28s cubic-bezier(.25,.46,.45,.94);
     will-change: left, top;
   }
 
